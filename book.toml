@@ -1,0 +1,12 @@
+[book]
+authors = ["Pascal"]
+language = "en"
+multilingual = false
+src = "src"
+title = "pasture"
+
+[output.html.playground]
+editable = true
+copy-js = true
+line-numbers = true
+mathjax-support = true
