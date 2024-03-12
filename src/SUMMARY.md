@@ -3,8 +3,8 @@
 - [Overview](overview.md)
 - [pasture data model](data_model.md)
 - [Using pasture](using_pasture.md)
-- [Point buffers in detail](point_buffers.md)
 - [Point layout in detail](point_layout.md)
+- [Point buffers in detail](point_buffers.md)
 - [Reading and writing point cloud files](point_io.md)
 
 <!-- - Overview
