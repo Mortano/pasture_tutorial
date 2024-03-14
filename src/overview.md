@@ -28,7 +28,7 @@ fn main() -> Result<()> {
             println!("({};{};{})", position.x, position.y, position.z);
         }
     } else {
-        bail!("Point cloud files has no positions!");
+        bail!("Point cloud file has no positions!");
     }
 
     Ok(())
