@@ -11,7 +11,8 @@
     - [Buffer slices](point_buffers/buffer_slices.md)
 - [Examples](examples.md)
     - [Basic usage](examples/basic_usage.md)
-    - [Reading and writing point cloud files](examples/point_io.md)
+    - [Reading and writing general point cloud files](examples/point_io.md)
+    - [Reading LAS files](examples/reading_las.md)
 
 <!-- - Overview
     - what is pasture? Why do i need it?
