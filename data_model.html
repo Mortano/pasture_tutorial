@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>pasture data model - pasture</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="using_pasture.html"><strong aria-hidden="true">2.</strong> Using pasture</a></li><li class="chapter-item expanded "><a href="data_model.html" class="active"><strong aria-hidden="true">3.</strong> pasture data model</a></li><li class="chapter-item expanded "><a href="point_layout.html"><strong aria-hidden="true">4.</strong> Point layout in detail</a></li><li class="chapter-item expanded "><a href="point_buffers.html"><strong aria-hidden="true">5.</strong> Point buffers in detail</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="point_buffers/builtin_types.html"><strong aria-hidden="true">5.1.</strong> The built-in point buffer types</a></li><li class="chapter-item expanded "><a href="point_buffers/buffer_traits.html"><strong aria-hidden="true">5.2.</strong> The buffer traits</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.3.</strong> Implementing your own point buffer type</div></li><li class="chapter-item expanded "><a href="point_buffers/buffer_slices.html"><strong aria-hidden="true">5.4.</strong> Buffer slices</a></li></ol></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">6.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="examples/basic_usage.html"><strong aria-hidden="true">6.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="examples/point_io.html"><strong aria-hidden="true">6.2.</strong> Reading and writing general point cloud files</a></li><li class="chapter-item expanded "><a href="examples/reading_las.html"><strong aria-hidden="true">6.3.</strong> Reading LAS files</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">pasture</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="the-data-model-of-pasture"><a class="header" href="#the-data-model-of-pasture">The data model of <code>pasture</code></a></h1>
+<p>In order to effectively work with <code>pasture</code>, it helps to understand the underlying data model, and how it relates to the typical structure of LiDAR point clouds. In this section, you will learn:</p>
+<ul>
+<li><a href="#the-basics-of-lidar-point-clouds">The basics of LiDAR point clouds</a></li>
+<li><a href="#how-pasture-represents-a-point-cloud-in-memory">How <code>pasture</code> represents a point cloud in memory</a></li>
+</ul>
+<h2 id="the-basics-of-lidar-point-clouds"><a class="header" href="#the-basics-of-lidar-point-clouds">The basics of LiDAR point clouds</a></h2>
+<p>LiDAR stands for 'Light Detection And Ranging' and is a technology for the acquisition of three-dimensional datasets called <em>point clouds</em>. LiDAR is typically used to create 3D scans of the real world, from individual objects like trees or cultural artifacts, up to the elevation profile of whole countries. One of the most hands-on things one can do with such a point cloud is to visualize it interactively. A popular tool for point cloud visualizations is <a href="https://potree.github.io/">Potree</a>, which runs inside most modern browsers. Feel free to explore the examples that Potree provides to get a feel for what a point cloud looks like. The <a href="http://potree.org/potree/examples/ca13.html">CA13 example</a> is a good start, because it shows the main challenges when working with (LiDAR) point clouds:</p>
+<ul>
+<li>Point clouds are often spatially large, covering dozens or hundreds of kilometers of space</li>
+<li>Point clouds are made up of millions, billions, or sometimes even trillions of individual points</li>
+<li>Point clouds can encode various attributes within a point</li>
+</ul>
+<p>Here is a screenshot from the CA13 example, displaying a point cloud with four different attributes (color, number of returns, classification, intensity):</p>
+<p><img src="figures/point_cloud_example.jpg" alt="A visualization of the CA13 point cloud showing four different attributes (color, number of returns, classification, intensity)" /></p>
+<p>Since <code>pasture</code> deals with the memory representation of point clouds, how would we represent a point cloud in memory in a systems programming language such as Rust?</p>
+<p>A point cloud is a collection of individual points, where each point is simply a tuple of attributes. LiDAR point clouds are always spatial, so each point has a <em>position</em> attribute, typically a vector in 3-dimensional space. Other attributes might include a monochrome intensity value or an RGB color, sensor-specific values such as the number of return pulses for each laser pulse, or high-level attributes such as the type of object that a point belongs to (typically called the <em>classification</em> of a point). So a point cloud data structure in Rust might look like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use nalgebra::Vector3;
+
+type Position = Vector3&lt;f64&gt;;
+type Classification = u8;
+type Color = Vector3&lt;u8&gt;;
+type NumberOfReturnPulses = u8;
+
+type Point = (Position, Color, Classification, NumberOfReturnPulses);
+
+type PointCloud = Vec&lt;Point&gt;;
+<span class="boring">}</span></code></pre></pre>
+<p>Only a few lines of code and we have a working point cloud data type. So why do we need <code>pasture</code> at all? Turns out, point clouds are more complex than they might look like at a first glance. In particular, <code>pasture</code> solves several problems that our current data structure has:</p>
+<ul>
+<li>Problem 1: Different point clouds have different attributes, but there are a fairly large number of common attributes that we do not want to rewrite every time</li>
+<li>Problem 2: Point cloud data is typically stored in files with specific binary layouts, such as LAS. We don't want to read/write these files manually</li>
+<li>Problem 3: We might want specific control over the memory layout of a single point, including the size of fields and their alignment</li>
+<li>Problem 4: We might want specific control over the memory layout of <em>all</em> points. <code>Vec</code> has a so-called <em>interleaved</em> memory layout, meaning the attributes of each point are interleaved (stored together in memory). What if we don't want that and instead want to store the same attribute for multiple points together in memory (as so-called <em>columnar</em> memory layout)?</li>
+<li>Problem 5: A point cloud might have more metadata associated with it, for example an <a href="https://en.wikipedia.org/wiki/Minimum_bounding_box">axis-aligned bounding box</a></li>
+</ul>
+<h2 id="how-pasture-represents-a-point-cloud-in-memory"><a class="header" href="#how-pasture-represents-a-point-cloud-in-memory">How <code>pasture</code> represents a point cloud in memory</a></h2>
+<p><code>pasture</code> provides a very flexible memory model for the in-memory representation of a point cloud. This model is somewhat complex in order to allow fine-grained control over the memory layout as well as the memory ownership model, but don't worry as there are some sensible defaults!</p>
+<p>The core data structure in <code>pasture</code> is called a <strong>point buffer</strong>. A point buffer is a combination of one or more memory regions together with a metadata object called a <strong>point layout</strong>, which describes which attributes each point has and how exactly they are represented in memory. This is essentially a runtime equivalent of the <a href="https://doc.rust-lang.org/reference/type-layout.html#representations">representation of a user-defined composite type in Rust</a>. It stores the data type, size, offset, and alignment of all attributes within a single point, just as the Rust compiler generates for a custom <code>struct</code> to determine which members are located at which offsets. The following diagram illustrates this concept using an abstract point buffer (left) and the specific <code>VectorBuffer</code> type together with the <code>Point</code> type from the previous example (right):</p>
+<p><img src="figures/point_buffer_explanation_v1.svg" alt="Picture showing point buffer, point layout, a compile-time struct and their relationship" /></p>
+<p>When working with point clouds in <code>pasture</code>, you have two options for accessing the data: Accessing individual attributes through an attribute specifier (called a <a href="https://docs.rs/pasture-core/latest/pasture_core/layout/struct.PointAttributeDefinition.html"><code>PointAttributeDefinition</code></a>), or accessing individual points as user-defined <code>struct</code>s. Since the underlying memory that a point buffer references is untyped, but Rust is a statically typed language, there has to be a point where we move from untyped to typed data. <code>pasture</code> does this through data accessor objects called <em>views</em>. The basic point buffer API only deals with untyped memory (typically through byte slices <code>[u8]</code>) but views provide strongly typed access to point attributes and points as a whole:</p>
+<p><img src="figures/point_buffer_views.svg" alt="Picture showing how point and attribute views relate to point buffer and point layout" /></p>
+<p><code>pasture</code> has many built-in definitions for commonly used point attributes, which are listed in the <a href="https://docs.rs/pasture-core/latest/pasture_core/layout/attributes/index.html"><code>layout::attributes</code> module</a>. Putting everything together, we can now understand the example code from the <a href="overview.html">Overview</a> section:</p>
+<pre><pre class="playground"><code class="language-rust editable">use anyhow::{bail, Context, Result};
+use pasture_core::{
+    containers::{BorrowedBuffer, VectorBuffer},
+    layout::attributes::POSITION_3D,
+    nalgebra::Vector3,
+};
+use pasture_io::base::{read_all};
+
+fn main() -&gt; Result&lt;()&gt; {
+    let points = read_all::&lt;VectorBuffer, _&gt;("pointcloud.las").context("Failed to read points")?;
+
+    if points.point_layout().has_attribute(&amp;POSITION_3D) {
+        for position in points
+            .view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D)
+            .into_iter()
+            .take(10)
+        {
+            println!("({};{};{})", position.x, position.y, position.z);
+        }
+    } else {
+        bail!("Point cloud files has no positions!");
+    }
+
+    Ok(())
+}</code></pre></pre>
+<p>In line 10 we read a point cloud from a file and store it as a <code>VectorBuffer</code>, a builtin point buffer type that <code>pasture</code> provides. As the name suggest, it stores points using a <code>Vec</code>, specifically a <code>Vec&lt;u8&gt;</code> since point buffer memory is always untyped in <code>pasture</code>. This is necessary because the exact format of a point record is not known until <em>runtime</em> as it depends on the format of the LAS file we read. The buffer gives access to its <code>PointLayout</code>, which we can ask about the attributes that the point cloud contains (line 12). The <code>POSITION_3D</code> value is one of the predefined attribute definitions and represents the 3D position attribute, as the name implies. If such an attribute is present in the point cloud, we can obtain a strongly typed view of the 3D positions (line 14), using the <code>view_attribute::&lt;T&gt;</code> function, where <code>T</code> is the data type that we want to access the attributes in. Views are convertible into iterators, so we can use the attribute view to iterate over all positions of the point cloud (or the first 10, in this example). Under the hood, <code>pasture</code> handles all the data reading from the untyped memory within the <code>VectorBuffer</code>.</p>
+<h2 id="im-not-convinced-why-all-the-work"><a class="header" href="#im-not-convinced-why-all-the-work">"I'm not convinced, why all the work?"</a></h2>
+<p>Depending on your personal background and preferences, you might be sceptical about this approach to point cloud data management. Why do we need the <code>PointLayout</code> type, why the views and why do we have to manually specify the type of the positions once we obtain a view to them? Can't <code>pasture</code> do this automatically?</p>
+<p>It helps to look at another Rust library for point cloud processing (that is also used in <code>pasture</code> for dealing with LAS and LAZ files): The <a href="https://docs.rs/las/latest/las/"><code>las</code></a> crate. It has the following example code in its documentation:</p>
+<pre><pre class="playground"><code class="language-rust editable">use las::{Read, Reader};
+let mut reader = Reader::from_path("tests/data/autzen.las").unwrap();
+for wrapped_point in reader.points() {
+    let point = wrapped_point.unwrap();
+    println!("Point coordinates: ({}, {}, {})", point.x, point.y, point.z);
+    if let Some(color) = point.color {
+        println!("Point color: red={}, green={}, blue={}",
+            color.red,
+            color.green,
+            color.blue,
+        );
+    }
+}</code></pre></pre>
+<p><code>las</code> has a custom <code>Reader</code> type through which we can iterate over all points in a LAS file (lines 2 and 3). The points themselves have a specific type called <a href="https://docs.rs/las/latest/las/point/struct.Point.html"><code>Point</code></a> which provides direct accessors to the position attribute using <code>point.x</code>, <code>point.y</code> and <code>point.z</code> (the type itself is ommited in the example code due to the type deduction rules of the Rust compiler). This type is the same, no matter what type of LAS file we load, so the <code>las</code> crate has to do some conversion internally from the point records within the LAS file to this <code>Point</code> type. This approach prioritizes convenience at the expense of performance. The conversion process itself has some overhead, and the <code>Point</code> type has a lot of memory overhead, since it has to include every possible LAS attribute (currently there are about 20 as per the <a href="https://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">LAS specification version 1.4</a>). The least amount of memory that a point in a LAS file requires is 20 bytes, but the <code>Point</code> structure from the <code>las</code> crate always requires 136 bytes (64-bit, version 0.8.1). That's an overhead of almost 7 times! Putting this into perspective, on a machine with 16GB of RAM, we could keep about 117 million <code>las</code> points in RAM, but 800 million raw LAS points.</p>
+<p>With <code>pasture</code>, we can specify the exact memory layout of the point records, so we could get a <code>PointLayout</code> that exactly matches the binary layout of a point record in the LAS file. Besides the improvement in memory efficiency, this also makes parsing a lot simpler, in the best case parsing is a no-op (check out the <a href="https://github.com/Mortano/pasture/blob/main/pasture-io/examples/fast_las_parsing.rs">fast LAS parsing example</a> of <code>pasture</code>). But it doesn't end there. With <code>pasture</code>, since we have precise control over the memory layout of a point buffer, we can also omit attributes. Oftentimes, we are not interested in all the attributes within a point cloud. In cases like these, <code>pasture</code> allows creating a reduced <code>PointLayout</code> that for example only contains the <code>POSITION_3D</code> attribute. Reading a point cloud using this layout will only parse the 3D positions and ignore all other data, further increasing the memory efficiency.</p>
+<p>Lastly, the approach of the <code>las</code> crate always assumes an interleaved memory layout. It is impossible to read data into a columnar memory layout this way. The control that <code>pasture</code> provides makes this possible and is often as simple as replacing the <code>VectorBuffer</code> type with the default columnar buffer type: <code>HashMapBuffer</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="using_pasture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="point_layout.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="using_pasture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="point_layout.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

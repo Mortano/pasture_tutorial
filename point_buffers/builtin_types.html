@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The built-in point buffer types - pasture</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../using_pasture.html"><strong aria-hidden="true">2.</strong> Using pasture</a></li><li class="chapter-item expanded "><a href="../data_model.html"><strong aria-hidden="true">3.</strong> pasture data model</a></li><li class="chapter-item expanded "><a href="../point_layout.html"><strong aria-hidden="true">4.</strong> Point layout in detail</a></li><li class="chapter-item expanded "><a href="../point_buffers.html"><strong aria-hidden="true">5.</strong> Point buffers in detail</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../point_buffers/builtin_types.html" class="active"><strong aria-hidden="true">5.1.</strong> The built-in point buffer types</a></li><li class="chapter-item expanded "><a href="../point_buffers/buffer_traits.html"><strong aria-hidden="true">5.2.</strong> The buffer traits</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.3.</strong> Implementing your own point buffer type</div></li><li class="chapter-item expanded "><a href="../point_buffers/buffer_slices.html"><strong aria-hidden="true">5.4.</strong> Buffer slices</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">6.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../examples/basic_usage.html"><strong aria-hidden="true">6.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../examples/point_io.html"><strong aria-hidden="true">6.2.</strong> Reading and writing general point cloud files</a></li><li class="chapter-item expanded "><a href="../examples/reading_las.html"><strong aria-hidden="true">6.3.</strong> Reading LAS files</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">pasture</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="the-built-in-point-buffer-types"><a class="header" href="#the-built-in-point-buffer-types">The built-in point buffer types</a></h1>
+<p><code>pasture</code> provides several built-in point buffer types that you can use in your application. These types are:</p>
+<ul>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.VectorBuffer.html"><code>VectorBuffer</code></a></li>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.HashMapBuffer.html"><code>HashMapBuffer</code></a></li>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.ExternalMemoryBuffer.html"><code>ExternalMemoryBuffer</code></a></li>
+</ul>
+<p>In this section you will learn about the capabilities of these three buffer types and when to use which. The code examples of this section can be found in the <a href="https://github.com/Mortano/pasture/blob/main/pasture-core/examples/basic_point_buffers.rs">basic point buffers example</a> in the <code>pasture</code> repository.</p>
+<h2 id="vectorbuffer---a-sensible-default"><a class="header" href="#vectorbuffer---a-sensible-default"><code>VectorBuffer</code> - A sensible default</a></h2>
+<p><code>VectorBuffer</code> is a point buffer that stores point data in a contiguous memory region using the Rust <code>Vec</code> type. We saw this buffer type in some of the previous examples. Just as <code>Vec</code> is the go-to data structure for most things in Rust, <code>VectorBuffer</code> is a sensible default for working with point cloud data. It closely resembles the type of data management that you might write yourself (think back to <code>Vec&lt;Point&gt;</code> in the <a href="../data_model.html">data model section</a>) if you want something that 'just works'.</p>
+<p>Here is how you can create a <code>VectorBuffer</code> for a custom point type:</p>
+<pre><pre class="playground"><code class="language-rust editable">/// This point type uses the #[derive(PointType)] macro to auto-generate an appropriate PointLayout
+#[repr(C, packed)]
+#[derive(Copy, Clone, PointType, Debug, bytemuck::NoUninit, bytemuck::AnyBitPattern)]
+struct SimplePoint {
+    #[pasture(BUILTIN_POSITION_3D)]
+    pub position: Vector3&lt;f64&gt;,
+    #[pasture(BUILTIN_INTENSITY)]
+    pub intensity: u16,
+}
+
+fn main() {
+    // Create some points
+    let points = vec![
+        SimplePoint {
+            position: Vector3::new(1.0, 2.0, 3.0),
+            intensity: 42,
+        },
+        SimplePoint {
+            position: Vector3::new(-1.0, -2.0, -3.0),
+            intensity: 84,
+        },
+    ];
+
+    // A VectorBuffer can be created from a PointLayout
+    let mut buffer = VectorBuffer::new_from_layout(SimplePoint::layout());
+    // We can push individual points through a (mutable) PointView:
+    buffer.view_mut().push_point(points[0]);
+    buffer.view_mut().push_point(points[1]);
+
+    // A more elegant solution is to collect the data from an iterator:
+    buffer = points.iter().copied().collect::&lt;VectorBuffer&gt;();
+}</code></pre></pre>
+<p>Recall that a <code>pasture</code> point buffer is always a combination of one or more memory regions with a <code>PointLayout</code>. The <code>new_from_layout</code> function is the way to default-construct most of the point buffer types in <code>pasture</code>. It is actually provided through a special trait called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.MakeBufferFromLayout.html"><code>MakeBufferFromLayout</code></a>.</p>
+<div id="admonition-info" class="admonition admonish-info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="#admonition-info"></a></p>
+</div>
+<div>
+<p>Since all point buffers require a <code>PointLayout</code>, we can't use the <code>Default</code> trait to default-construct point buffers. <code>PointLayout</code> does implement <code>Default</code>, but the resulting <code>PointLayout</code> contains no point attributes. A point buffer with such a layout will never be able to hold any data, as the size of an empty <code>PointLayout</code> is zero! For this reason, <code>pasture</code> does not implement <code>Default</code> for the built-in point buffer types.</p>
+</div>
+</div>
+<p>Since a <code>VectorBuffer</code> stores points contiguously in memory, there are a couple of ways to access the point data, which correspond to what you would expect from a <code>Vec&lt;Point&gt;</code>:</p>
+<pre><pre class="playground"><code class="language-rust editable">// Iterate by value:
+for point in buffer.view::&lt;SimplePoint&gt;() {
+    println!("{:?}", point);
+}
+
+// Iterate by ref:
+for point_ref in buffer.view::&lt;SimplePoint&gt;().iter() {
+    println!("{:?}", point_ref);
+}
+
+// Iterate by mutable ref:
+for point_mut in buffer.view_mut::&lt;SimplePoint&gt;().iter_mut() {
+    point_mut.intensity *= 2;
+}</code></pre></pre>
+<p>All access to strongly typed point data requires the creation of a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html"><code>PointView</code></a> structure, which is done by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view"><code>view::&lt;T&gt;</code></a> on the buffer. For all buffer types, the <code>PointView</code> structure always supports accessing point data by value, so in line 2 the type of <code>point</code> is <code>SimplePoint</code>. The <code>VectorBuffer</code> is a buffer with <em>interleaved memory layout</em> (which is explained in-depth in the section on <a href="memory_layout.html">memory layouts</a>). This means that all data for a single point is stored contiguously in memory (just as it would in a <code>Vec&lt;SimplePoint&gt;</code>), which allows accessing point data through borrows as shown in line 7. The type of <code>point_ref</code> is thus <code>&amp;SimplePoint</code>. For mutable access, we have to use a second view type called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointViewMut.html"><code>PointViewMut</code></a> which is created by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedMutBuffer.html#method.view_mut"><code>view_mut::&lt;T&gt;</code></a> on the buffer. The type of <code>point_mut</code> in line 12 is thus <code>&amp;mut SimplePoint</code>.</p>
+<p>Note that the point view types also provide methods to access points by index, such as <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html#method.at"><code>at</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointViewMut.html#method.set_at"><code>set_at</code></a>.</p>
+<div id="admonition-info-1" class="admonition admonish-info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="#admonition-info-1"></a></p>
+</div>
+<div>
+<p>The Rust language is limited when it comes to writing types that are generic over mutability, which is why there are two different point view types in <code>pasture</code>: One for immutable access and one for mutable access.</p>
+</div>
+</div>
+<p>Besides accessing point data through a <code>PointView</code>, we can also access individual attribute values through <em>attribute views</em>:</p>
+<pre><pre class="playground"><code class="language-rust editable">for position in buffer.view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D) {
+    println!("{position:?}");
+}</code></pre></pre>
+<p>The basic view type for attributes is <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.AttributeView.html"><code>AttributeView</code></a>, which is created by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view_attribute"><code>view_attribute::&lt;T&gt;</code></a> on a point buffer. The syntax is similar to that for creating point views. The only difference is that we have to tell <code>pasture</code> which attribute we want to access, which we do by passing a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html"><code>PointAttributeDefinition</code></a> object to <code>view_attribute::&lt;T&gt;</code>. The resulting view then provides access to attribute values by value, so the <code>position</code> variable in this example is of type <code>Vector3&lt;f64&gt;</code> (the type we passed to <code>view_attribute::&lt;T&gt;</code>).</p>
+<p>There are also ways to access attribute data by immutable and mutable borrow, analogous to the point views, however the <code>VectorBuffer</code> type does not support these. If we want that, we need to use one of the other buffer types, which we will look at now!</p>
+<h2 id="hashmapbuffer---a-buffer-with-columnar-memory-layout"><a class="header" href="#hashmapbuffer---a-buffer-with-columnar-memory-layout"><code>HashMapBuffer</code> - A buffer with columnar memory layout</a></h2>
+<p>While the <code>VectorBuffer</code> is a sensible default, <code>pasture</code> supports more fine-grained control over the memory layout of point clouds. One common optimization is to move from an <em>interleaved memory layout</em> to a <em>columnar memory layout</em> (sometimes called <a href="https://en.wikipedia.org/wiki/AoS_and_SoA">structure of arrays (SoA)</a>). The following picture illustrates the difference between the two memory layouts:</p>
+<p><img src="../figures/aos_vs_soa_memory_layout.svg" alt="Picture showing the difference between interleaved (AoS) and columnar (SoA) memory layouts" /></p>
+<p>In a <code>HashMapBuffer</code>, all values that belong to the same attribute are stored together in memory using one <code>Vec&lt;u8&gt;</code>. So in the image above, all positions are in one vector, all colors in a second vector, and all classifications in a third vector. This is what allows accessing individual attributes by immutable and mutable borrow! First, let's construct a <code>HashMapBuffer</code>, which works exactly the same as constructing a <code>VectorBuffer</code>:</p>
+<pre><pre class="playground"><code class="language-rust editable">let points = vec![
+    SimplePoint {
+        position: Vector3::new(1.0, 2.0, 3.0),
+        intensity: 42,
+    },
+    SimplePoint {
+        position: Vector3::new(-1.0, -2.0, -3.0),
+        intensity: 84,
+    },
+];
+
+let mut buffer = HashMapBuffer::new_from_layout(SimplePoint::layout());
+buffer.view_mut().push_point(points[0]);
+buffer.view_mut().push_point(points[1]);
+
+buffer = points.into_iter().collect::&lt;HashMapBuffer&gt;();</code></pre></pre>
+<p>If we want to access the values of a specific point attribute, we have to use attribute views, with the notable difference that the <code>HashMapBuffer</code> supports attribute views with immutable and mutable access to individual attributes:</p>
+<pre><pre class="playground"><code class="language-rust editable">for intensity in buffer.view_attribute::&lt;u16&gt;(&amp;INTENSITY).iter() {
+    println!("{intensity}");
+}
+
+for intensity in buffer.view_attribute_mut::&lt;u16&gt;(&amp;INTENSITY).iter_mut() {
+    *intensity *= 2;
+}</code></pre></pre>
+<p>In line 1, the type of <code>intensity</code> is <code>&amp;u16</code>, in line 5 the type of <code>intensity</code> is <code>&amp;mut u16</code>. The latter allows in-place manipulation of attribute data.</p>
+<div id="admonition-tip" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="#admonition-tip"></a></p>
+</div>
+<div>
+<p>We could achieve the same result by using a <code>VectorBuffer</code> and accessing the <code>intensity</code> field on the <code>SimplePoint</code> structure. The advantage of the columnar memory layout is that it is more cache-efficient, as all intensity values are stored together in memory, compared to the interleaved memory layout, where you always have 2 intensity bytes followed by 24 (unused) position bytes that are skipped over.</p>
+</div>
+</div>
+<p>The <code>HashMapBuffer</code> is especially useful if you do not have a corresponding <code>struct</code> definition for the <code>PointLayout</code> of your type. Reading LAS files is a good example for such a situation, as the actual memory layout of the points in the file is only known at runtime, and LAS even supports user-defined attributes. There is no way of creating a matching <code>struct</code> for every possible LAS point memory layout, so <code>pasture</code> builds a matching <code>PointLayout</code> dynamically at runtime. As a consequence, we can't use point views because we don't have a corresponding <code>PointType</code> that we can pass to <code>view::&lt;T&gt;</code><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"></input><span class="sidenote">There are exceptions of course. The LAS format in version 1.4 defines 11 point formats with well-known memory layouts, for which <code>pasture</code> does provide <a href="https://docs.rs/pasture-io/latest/pasture_io/las/struct.LasPointFormat0.html"><code>struct</code> definitions</a>. If the memory layout of a file matches one of these memory layouts and does not have user-defined attributes, point views can be used. </span>. We thus have to access point data through attribute views, which is more efficient with a <code>HashMapBuffer</code> than with a <code>VectorBuffer</code>.</p>
+<div id="admonition-tip-1" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="#admonition-tip-1"></a></p>
+</div>
+<div>
+<p>We haven't yet covered <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/conversion/struct.BufferLayoutConverter.html"><em>point layout conversions</em></a>, but these are also more efficient when converting between <code>HashMapBuffers</code> due to cache efficiency.</p>
+</div>
+</div>
+<h2 id="a-glimpse-at-externalmemorybuffer"><a class="header" href="#a-glimpse-at-externalmemorybuffer">A glimpse at <code>ExternalMemoryBuffer</code></a></h2>
+<p>The last built-in buffer type is experimental and subject to change. It is called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.ExternalMemoryBuffer.html"><code>ExternalMemoryBuffer</code></a> and does what the name suggests: It refers to an <em>external</em> memory location that the buffer does NOT own itself. It works like <code>VectorBuffer</code>, except the underlying memory block is not a <code>Vec&lt;u8&gt;</code> but instead a <code>&amp;[u8]</code> (or <code>&amp;mut [u8]</code>). It allows structuring a piece of external memory as a point buffer with a known <code>PointLayout</code>, which is useful in situations where you want to read from or write to a memory region that you obtain from some external source. The two main examples that come to mind here are:</p>
+<ul>
+<li>Using memory mapped I/O, where the memory mapping systems call (e.g. <a href=""><code>mmap</code></a>) returns a pointer to a memory region, which we want to treat as a point buffer. There is a <a href="https://github.com/Mortano/pasture/blob/main/pasture-io/examples/fast_las_parsing.rs"><code>pasture</code> example</a> for using this to view the contents of a LAS file as a point buffer.</li>
+<li>Doing GPGPU computations, where you have to copy data from/to GPU buffers, which are obtained through special API calls that return a pointer</li>
+</ul>
+<p>As this type is experimental, we won't cover it in more detail.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../point_buffers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../point_buffers/buffer_traits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../point_buffers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../point_buffers/buffer_traits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

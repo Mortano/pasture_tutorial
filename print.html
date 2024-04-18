@@ -1,0 +1,1380 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>pasture</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="using_pasture.html"><strong aria-hidden="true">2.</strong> Using pasture</a></li><li class="chapter-item expanded "><a href="data_model.html"><strong aria-hidden="true">3.</strong> pasture data model</a></li><li class="chapter-item expanded "><a href="point_layout.html"><strong aria-hidden="true">4.</strong> Point layout in detail</a></li><li class="chapter-item expanded "><a href="point_buffers.html"><strong aria-hidden="true">5.</strong> Point buffers in detail</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="point_buffers/builtin_types.html"><strong aria-hidden="true">5.1.</strong> The built-in point buffer types</a></li><li class="chapter-item expanded "><a href="point_buffers/buffer_traits.html"><strong aria-hidden="true">5.2.</strong> The buffer traits</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.3.</strong> Implementing your own point buffer type</div></li><li class="chapter-item expanded "><a href="point_buffers/buffer_slices.html"><strong aria-hidden="true">5.4.</strong> Buffer slices</a></li></ol></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">6.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="examples/basic_usage.html"><strong aria-hidden="true">6.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="examples/point_io.html"><strong aria-hidden="true">6.2.</strong> Reading and writing general point cloud files</a></li><li class="chapter-item expanded "><a href="examples/reading_las.html"><strong aria-hidden="true">6.3.</strong> Reading LAS files</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">pasture</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pasture"><a class="header" href="#pasture"><code>pasture</code></a></h1>
+<p><a href="https://crates.io/crates/pasture-core"><code>pasture</code></a> is a Rust library for working with LiDAR point cloud data. Its main purpose is to provide data structures for handling collections of points with a wide range of attributes, as well as the serialization to and deserialization from well-known point cloud formats, such as <a href="https://en.wikipedia.org/wiki/LAS_file_format">LAS</a> or <a href="https://github.com/CesiumGS/3d-tiles">3D Tiles</a>. The data structures that <code>pasture</code> provides are meant to be as efficient as possible in terms of memory usage and access speed, while maintaining a level of flexibility and safety that C/C++ libraries such as <a href="https://pdal.io/en/2.6.3/">PDAL</a> do not have. Memory and I/O are the main focus of <code>pasture</code>, so it works best as a building block for tools and applications that require efficient handling of LiDAR data. If you are looking for a library that provides processing and analysis capabilities, <code>pasture</code> is probably not what you are looking for (though <a href="https://crates.io/crates/pasture-algorithms"><code>pasture-algorithms</code></a> eventually aims at providing more processing capabilities).</p>
+<h2 id="about-this-guide"><a class="header" href="#about-this-guide">About this guide</a></h2>
+<p>In this guide you will learn how to use <code>pasture</code> in your own code and why <code>pasture</code> is designed the way it is. It requires some knowledge of the Rust programming language, but no prior knowledge of LiDAR point clouds. To get a feel for how <code>pasture</code> code looks, here is a first example showing how to read point data from a <code>LAS</code> file:</p>
+<pre><pre class="playground"><code class="language-rust">use anyhow::{bail, Context, Result};
+use pasture_core::{
+    containers::{BorrowedBuffer, VectorBuffer},
+    layout::attributes::POSITION_3D,
+    nalgebra::Vector3,
+};
+use pasture_io::base::{read_all};
+
+fn main() -&gt; Result&lt;()&gt; {
+    // Reading a point cloud file is as simple as calling `read_all`
+    let points = read_all::&lt;VectorBuffer, _&gt;("pointcloud.las").context("Failed to read points")?;
+
+    if points.point_layout().has_attribute(&amp;POSITION_3D) {
+        for position in points
+            .view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D)
+            .into_iter()
+            .take(10)
+        {
+            println!("({};{};{})", position.x, position.y, position.z);
+        }
+    } else {
+        bail!("Point cloud file has no positions!");
+    }
+
+    Ok(())
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="using-pasture-in-your-code"><a class="header" href="#using-pasture-in-your-code">Using <code>pasture</code> in your code</a></h1>
+<p>In this section we will look at how the <code>pasture</code> library is structured and how you can include it in your code.</p>
+<h2 id="the-structure-of-pasture"><a class="header" href="#the-structure-of-pasture">The structure of <code>pasture</code></a></h2>
+<p><code>pasture</code> consists of several related libraries:</p>
+<ul>
+<li><a href="https://crates.io/crates/pasture-core"><code>pasture-core</code></a> contains all core data structures: Point buffer types, the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointLayout.html"><code>PointLayout</code></a> type, predefined attribute definitions, as well as common math code for vectors and bounding boxes</li>
+<li><a href="https://crates.io/crates/pasture-io"><code>pasture-io</code></a> contains code for doing point cloud I/O, i.e. reading and writing files in common formats</li>
+<li><a href="https://crates.io/crates/pasture-derive"><code>pasture-derive</code></a> contains the <code>#[derive(PointType)]</code> macro, which auto-generates a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointLayout.html"><code>PointLayout</code></a> from a Rust <code>struct</code></li>
+<li><a href="https://crates.io/crates/pasture-algorithms"><code>pasture-algorithms</code></a> contains algorithms for working with point clouds. It is currently in a very early stage of development and contains only a limited set of algorithms. If you want to contribute, <a href="https://github.com/Mortano/pasture/pulls">pull requests are welcome!</a></li>
+</ul>
+<h2 id="using-pasture-in-your-code-1"><a class="header" href="#using-pasture-in-your-code-1">Using <code>pasture</code> in your code</a></h2>
+<p>For most projects, you will typically include <code>pasture-core</code>, <code>pasture-io</code>, and <code>pasture-derive</code> by adding the following code to your <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">pasture-core = "0.4.0"
+pasture-io = "0.4.0"
+pasture-derive = "0.4.0"
+</code></pre>
+<p>If you have your own I/O code, you probably won't need <code>pasture-io</code>.</p>
+<p>Looking at the example shown in the <a href="overview.html">Overview</a> section, we can understand the basic include structure:</p>
+<pre><pre class="playground"><code class="language-rust editable">use pasture_core::{
+    containers::{BorrowedBuffer, VectorBuffer},
+    layout::attributes::POSITION_3D,
+    nalgebra::Vector3,
+};
+use pasture_io::base::{read_all};</code></pre></pre>
+<p>The two main modules that you will include from in <code>pasture-core</code> are <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/index.html"><code>containers</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/index.html"><code>layout</code></a>. <code>containers</code> contains all traits and implementations for the various point buffer types that <code>pasture</code> supports. They are explained in detail in the <a href="point_buffers.html">point buffers section of this tutorial</a>. <code>layout</code> contains the <code>PointLayout</code> type and all its associated types, such as the predefined attribute definitions, which are explained in detail in the <a href="point_layout.html">point layout section of this tutorial</a>.</p>
+<p>Since point clouds are spatial data, they require a bit of linear algebra, for which <code>pasture</code> uses the <a href="https://docs.rs/nalgebra/latest/nalgebra/"><code>nalgebra</code> crate</a>. <code>pasture-core</code> re-exports <code>nalgebra</code> so that you can interface with its types while using <code>pasture</code>.</p>
+<p>For doing I/O, <code>pasture-io</code> contains several built-in types. The simplest one is the <code>read_all</code> function included in the example, but the <a href="https://docs.rs/pasture-io/0.4.0/pasture_io/base/index.html"><code>base</code></a> module of <code>pasture-io</code> also contains traits for types that read from a point cloud file or write to a point cloud file. Point cloud I/O is explained in depth in <a href="point_io.html">another section of this tutorial</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-data-model-of-pasture"><a class="header" href="#the-data-model-of-pasture">The data model of <code>pasture</code></a></h1>
+<p>In order to effectively work with <code>pasture</code>, it helps to understand the underlying data model, and how it relates to the typical structure of LiDAR point clouds. In this section, you will learn:</p>
+<ul>
+<li><a href="data_model.html#the-basics-of-lidar-point-clouds">The basics of LiDAR point clouds</a></li>
+<li><a href="data_model.html#how-pasture-represents-a-point-cloud-in-memory">How <code>pasture</code> represents a point cloud in memory</a></li>
+</ul>
+<h2 id="the-basics-of-lidar-point-clouds"><a class="header" href="#the-basics-of-lidar-point-clouds">The basics of LiDAR point clouds</a></h2>
+<p>LiDAR stands for 'Light Detection And Ranging' and is a technology for the acquisition of three-dimensional datasets called <em>point clouds</em>. LiDAR is typically used to create 3D scans of the real world, from individual objects like trees or cultural artifacts, up to the elevation profile of whole countries. One of the most hands-on things one can do with such a point cloud is to visualize it interactively. A popular tool for point cloud visualizations is <a href="https://potree.github.io/">Potree</a>, which runs inside most modern browsers. Feel free to explore the examples that Potree provides to get a feel for what a point cloud looks like. The <a href="http://potree.org/potree/examples/ca13.html">CA13 example</a> is a good start, because it shows the main challenges when working with (LiDAR) point clouds:</p>
+<ul>
+<li>Point clouds are often spatially large, covering dozens or hundreds of kilometers of space</li>
+<li>Point clouds are made up of millions, billions, or sometimes even trillions of individual points</li>
+<li>Point clouds can encode various attributes within a point</li>
+</ul>
+<p>Here is a screenshot from the CA13 example, displaying a point cloud with four different attributes (color, number of returns, classification, intensity):</p>
+<p><img src="figures/point_cloud_example.jpg" alt="A visualization of the CA13 point cloud showing four different attributes (color, number of returns, classification, intensity)" /></p>
+<p>Since <code>pasture</code> deals with the memory representation of point clouds, how would we represent a point cloud in memory in a systems programming language such as Rust?</p>
+<p>A point cloud is a collection of individual points, where each point is simply a tuple of attributes. LiDAR point clouds are always spatial, so each point has a <em>position</em> attribute, typically a vector in 3-dimensional space. Other attributes might include a monochrome intensity value or an RGB color, sensor-specific values such as the number of return pulses for each laser pulse, or high-level attributes such as the type of object that a point belongs to (typically called the <em>classification</em> of a point). So a point cloud data structure in Rust might look like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use nalgebra::Vector3;
+
+type Position = Vector3&lt;f64&gt;;
+type Classification = u8;
+type Color = Vector3&lt;u8&gt;;
+type NumberOfReturnPulses = u8;
+
+type Point = (Position, Color, Classification, NumberOfReturnPulses);
+
+type PointCloud = Vec&lt;Point&gt;;
+<span class="boring">}</span></code></pre></pre>
+<p>Only a few lines of code and we have a working point cloud data type. So why do we need <code>pasture</code> at all? Turns out, point clouds are more complex than they might look like at a first glance. In particular, <code>pasture</code> solves several problems that our current data structure has:</p>
+<ul>
+<li>Problem 1: Different point clouds have different attributes, but there are a fairly large number of common attributes that we do not want to rewrite every time</li>
+<li>Problem 2: Point cloud data is typically stored in files with specific binary layouts, such as LAS. We don't want to read/write these files manually</li>
+<li>Problem 3: We might want specific control over the memory layout of a single point, including the size of fields and their alignment</li>
+<li>Problem 4: We might want specific control over the memory layout of <em>all</em> points. <code>Vec</code> has a so-called <em>interleaved</em> memory layout, meaning the attributes of each point are interleaved (stored together in memory). What if we don't want that and instead want to store the same attribute for multiple points together in memory (as so-called <em>columnar</em> memory layout)?</li>
+<li>Problem 5: A point cloud might have more metadata associated with it, for example an <a href="https://en.wikipedia.org/wiki/Minimum_bounding_box">axis-aligned bounding box</a></li>
+</ul>
+<h2 id="how-pasture-represents-a-point-cloud-in-memory"><a class="header" href="#how-pasture-represents-a-point-cloud-in-memory">How <code>pasture</code> represents a point cloud in memory</a></h2>
+<p><code>pasture</code> provides a very flexible memory model for the in-memory representation of a point cloud. This model is somewhat complex in order to allow fine-grained control over the memory layout as well as the memory ownership model, but don't worry as there are some sensible defaults!</p>
+<p>The core data structure in <code>pasture</code> is called a <strong>point buffer</strong>. A point buffer is a combination of one or more memory regions together with a metadata object called a <strong>point layout</strong>, which describes which attributes each point has and how exactly they are represented in memory. This is essentially a runtime equivalent of the <a href="https://doc.rust-lang.org/reference/type-layout.html#representations">representation of a user-defined composite type in Rust</a>. It stores the data type, size, offset, and alignment of all attributes within a single point, just as the Rust compiler generates for a custom <code>struct</code> to determine which members are located at which offsets. The following diagram illustrates this concept using an abstract point buffer (left) and the specific <code>VectorBuffer</code> type together with the <code>Point</code> type from the previous example (right):</p>
+<p><img src="figures/point_buffer_explanation_v1.svg" alt="Picture showing point buffer, point layout, a compile-time struct and their relationship" /></p>
+<p>When working with point clouds in <code>pasture</code>, you have two options for accessing the data: Accessing individual attributes through an attribute specifier (called a <a href="https://docs.rs/pasture-core/latest/pasture_core/layout/struct.PointAttributeDefinition.html"><code>PointAttributeDefinition</code></a>), or accessing individual points as user-defined <code>struct</code>s. Since the underlying memory that a point buffer references is untyped, but Rust is a statically typed language, there has to be a point where we move from untyped to typed data. <code>pasture</code> does this through data accessor objects called <em>views</em>. The basic point buffer API only deals with untyped memory (typically through byte slices <code>[u8]</code>) but views provide strongly typed access to point attributes and points as a whole:</p>
+<p><img src="figures/point_buffer_views.svg" alt="Picture showing how point and attribute views relate to point buffer and point layout" /></p>
+<p><code>pasture</code> has many built-in definitions for commonly used point attributes, which are listed in the <a href="https://docs.rs/pasture-core/latest/pasture_core/layout/attributes/index.html"><code>layout::attributes</code> module</a>. Putting everything together, we can now understand the example code from the <a href="overview.html">Overview</a> section:</p>
+<pre><pre class="playground"><code class="language-rust editable">use anyhow::{bail, Context, Result};
+use pasture_core::{
+    containers::{BorrowedBuffer, VectorBuffer},
+    layout::attributes::POSITION_3D,
+    nalgebra::Vector3,
+};
+use pasture_io::base::{read_all};
+
+fn main() -&gt; Result&lt;()&gt; {
+    let points = read_all::&lt;VectorBuffer, _&gt;("pointcloud.las").context("Failed to read points")?;
+
+    if points.point_layout().has_attribute(&amp;POSITION_3D) {
+        for position in points
+            .view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D)
+            .into_iter()
+            .take(10)
+        {
+            println!("({};{};{})", position.x, position.y, position.z);
+        }
+    } else {
+        bail!("Point cloud files has no positions!");
+    }
+
+    Ok(())
+}</code></pre></pre>
+<p>In line 10 we read a point cloud from a file and store it as a <code>VectorBuffer</code>, a builtin point buffer type that <code>pasture</code> provides. As the name suggest, it stores points using a <code>Vec</code>, specifically a <code>Vec&lt;u8&gt;</code> since point buffer memory is always untyped in <code>pasture</code>. This is necessary because the exact format of a point record is not known until <em>runtime</em> as it depends on the format of the LAS file we read. The buffer gives access to its <code>PointLayout</code>, which we can ask about the attributes that the point cloud contains (line 12). The <code>POSITION_3D</code> value is one of the predefined attribute definitions and represents the 3D position attribute, as the name implies. If such an attribute is present in the point cloud, we can obtain a strongly typed view of the 3D positions (line 14), using the <code>view_attribute::&lt;T&gt;</code> function, where <code>T</code> is the data type that we want to access the attributes in. Views are convertible into iterators, so we can use the attribute view to iterate over all positions of the point cloud (or the first 10, in this example). Under the hood, <code>pasture</code> handles all the data reading from the untyped memory within the <code>VectorBuffer</code>.</p>
+<h2 id="im-not-convinced-why-all-the-work"><a class="header" href="#im-not-convinced-why-all-the-work">"I'm not convinced, why all the work?"</a></h2>
+<p>Depending on your personal background and preferences, you might be sceptical about this approach to point cloud data management. Why do we need the <code>PointLayout</code> type, why the views and why do we have to manually specify the type of the positions once we obtain a view to them? Can't <code>pasture</code> do this automatically?</p>
+<p>It helps to look at another Rust library for point cloud processing (that is also used in <code>pasture</code> for dealing with LAS and LAZ files): The <a href="https://docs.rs/las/latest/las/"><code>las</code></a> crate. It has the following example code in its documentation:</p>
+<pre><pre class="playground"><code class="language-rust editable">use las::{Read, Reader};
+let mut reader = Reader::from_path("tests/data/autzen.las").unwrap();
+for wrapped_point in reader.points() {
+    let point = wrapped_point.unwrap();
+    println!("Point coordinates: ({}, {}, {})", point.x, point.y, point.z);
+    if let Some(color) = point.color {
+        println!("Point color: red={}, green={}, blue={}",
+            color.red,
+            color.green,
+            color.blue,
+        );
+    }
+}</code></pre></pre>
+<p><code>las</code> has a custom <code>Reader</code> type through which we can iterate over all points in a LAS file (lines 2 and 3). The points themselves have a specific type called <a href="https://docs.rs/las/latest/las/point/struct.Point.html"><code>Point</code></a> which provides direct accessors to the position attribute using <code>point.x</code>, <code>point.y</code> and <code>point.z</code> (the type itself is ommited in the example code due to the type deduction rules of the Rust compiler). This type is the same, no matter what type of LAS file we load, so the <code>las</code> crate has to do some conversion internally from the point records within the LAS file to this <code>Point</code> type. This approach prioritizes convenience at the expense of performance. The conversion process itself has some overhead, and the <code>Point</code> type has a lot of memory overhead, since it has to include every possible LAS attribute (currently there are about 20 as per the <a href="https://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">LAS specification version 1.4</a>). The least amount of memory that a point in a LAS file requires is 20 bytes, but the <code>Point</code> structure from the <code>las</code> crate always requires 136 bytes (64-bit, version 0.8.1). That's an overhead of almost 7 times! Putting this into perspective, on a machine with 16GB of RAM, we could keep about 117 million <code>las</code> points in RAM, but 800 million raw LAS points.</p>
+<p>With <code>pasture</code>, we can specify the exact memory layout of the point records, so we could get a <code>PointLayout</code> that exactly matches the binary layout of a point record in the LAS file. Besides the improvement in memory efficiency, this also makes parsing a lot simpler, in the best case parsing is a no-op (check out the <a href="https://github.com/Mortano/pasture/blob/main/pasture-io/examples/fast_las_parsing.rs">fast LAS parsing example</a> of <code>pasture</code>). But it doesn't end there. With <code>pasture</code>, since we have precise control over the memory layout of a point buffer, we can also omit attributes. Oftentimes, we are not interested in all the attributes within a point cloud. In cases like these, <code>pasture</code> allows creating a reduced <code>PointLayout</code> that for example only contains the <code>POSITION_3D</code> attribute. Reading a point cloud using this layout will only parse the 3D positions and ignore all other data, further increasing the memory efficiency.</p>
+<p>Lastly, the approach of the <code>las</code> crate always assumes an interleaved memory layout. It is impossible to read data into a columnar memory layout this way. The control that <code>pasture</code> provides makes this possible and is often as simple as replacing the <code>VectorBuffer</code> type with the default columnar buffer type: <code>HashMapBuffer</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="understanding-the-pointlayout-type"><a class="header" href="#understanding-the-pointlayout-type">Understanding the <code>PointLayout</code> type</a></h1>
+<p>In this section you will learn all about the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointLayout.html"><code>PointLayout</code></a> type in <code>pasture</code>. You will learn how it is used to represent the structure of the points in your point clouds, how it relates to individual point attributes, and how you can create your own <code>PointLayout</code> either from hand or from an existing <code>struct</code> definition. Additionally you will learn about all the built-in point attribute definitions that <code>pasture</code> provides, and how you can create your own point attributes.</p>
+<h2 id="point-attributes"><a class="header" href="#point-attributes">Point attributes</a></h2>
+<p>In the <a href="data_model.html">data model section</a> of this tutorial we learned that <code>pasture</code> models a point cloud as a collection of tuples of attributes. A point attribute is a uniquely identifiable piece of data, which <code>pasture</code> represents using two types: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html"><code>PointAttributeDefinition</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeMember.html"><code>PointAttributeMember</code></a>. Understanding how attributes combine to form a <code>PointLayout</code> will also answer the question why there are two distinct attribute types in <code>pasture</code>.</p>
+<p>When we talk about specific point attributes, we often refer to them by their <em>name</em>, which is why <code>pasture</code> uses strings as the unique identifiers for point attributes. To get a feel for the different types of point attributes that are commonly used, we can look at the <a href="https://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">LAS file specification</a>, specifically under the section that defines the <em>point data record formats</em>. Looking at point data record format 0---the simplest format that LAS provides---we see the following list of point attributes:</p>
+<div class="table-wrapper"><table><thead><tr><th>Item</th><th>Format</th><th>Size</th><th>Required</th></tr></thead><tbody>
+<tr><td>X</td><td>long</td><td>4 bytes</td><td>yes</td></tr>
+<tr><td>Y</td><td>long</td><td>4 bytes</td><td>yes</td></tr>
+<tr><td>Z</td><td>long</td><td>4 bytes</td><td>yes</td></tr>
+<tr><td>Intensity</td><td>unsigned short</td><td>2 bytes</td><td>no</td></tr>
+<tr><td>Return Number</td><td>3 bits (bits 0-2)</td><td>3 bits</td><td>yes</td></tr>
+<tr><td>Number of Returns (Given Pulse)</td><td>3 bits (bits 3-5)</td><td>3 bits</td><td>yes</td></tr>
+<tr><td>Scan Direction Flag</td><td>1 bit (bit 6)</td><td>1 bit</td><td>yes</td></tr>
+<tr><td>Edge of Flight Line</td><td>1 bit (bit 7)</td><td>1 bit</td><td>yes</td></tr>
+<tr><td>Classification</td><td>unsigned char</td><td>1 byte</td><td>yes</td></tr>
+<tr><td>Scan Angle Rank (-90 to +90) – Left Side</td><td>signed char</td><td>1 byte</td><td>yes</td></tr>
+<tr><td>User Data</td><td>unsigned char</td><td>1 byte</td><td>no</td></tr>
+<tr><td>Point Source ID</td><td>unsigned short</td><td>2 bytes</td><td>yes</td></tr>
+</tbody></table>
+</div>
+<p>We see the name of each attribute (the <code>Item</code> column), the data type used to represent the attribute (the <code>Format</code>) column, how many bits or bytes a single value of that attribute requires (the <code>Size</code> column), and whether or not it is required to include this value in the LAS point record (the <code>Required</code> column). We don't really care about the last column, but the first three columns are interesting. Not only do they explain what types of data a single point might contain, they also give information of the <em>memory representation</em> of the point data. <code>pasture</code> deals with efficient in-memory representations of point clouds, so the mapping of memory ranges to the actual point attributes is a central part of what <code>pasture</code> does. It does this by using precisely the information we saw in the table:</p>
+<p>Each point attribute in <code>pasture</code> has a unique name, a data type and a size! If you look at the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html"><code>PointAttributeDefinition</code></a> type, you will see three corresponding accessors:</p>
+<ul>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html#method.name"><code>fn name(&amp;self) -&gt; &amp;str</code></a> for accessing the name of the attribute</li>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html#method.datatype"><code>fn datatype(&amp;self) -&gt; PointAttributeDataType</code></a> for accessing the data type of the attribute</li>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html#method.size"><code>fn size(&amp;self) -&gt; u64</code></a> for accessing the size in bytes of the attribute</li>
+</ul>
+<p>If we look into the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/attributes/index.html"><code>layout::attributes</code> module</a> we see all the predefined point attributes that <code>pasture</code> provides:</p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<tr><td>CLASSIFICATION</td><td>Attribute definition for a classification. Default datatype is U8</td></tr>
+<tr><td>CLASSIFICATION_FLAGS</td><td>Attribute definition for the classification flags. Default datatype is U8</td></tr>
+<tr><td>COLOR_RGB</td><td>Attribute definition for an RGB color. Default datatype is Vec3u16</td></tr>
+<tr><td>EDGE_OF_FLIGHT_LINE</td><td>Attribute definition for an edge of flight line flag. Default datatype is Bool</td></tr>
+<tr><td>GPS_TIME</td><td>Attribute definition for a GPS timestamp. Default datatype is F64</td></tr>
+<tr><td>INTENSITY</td><td>Attribute definition for an intensity value. Default datatype is U16</td></tr>
+<tr><td>NIR</td><td>Attribute definition for near-infrared records (NIR). Default datatype is U16</td></tr>
+<tr><td>NORMAL</td><td>Attribute definition for a 3D point normal. Default datatype is Vec3f32</td></tr>
+<tr><td>NUMBER_OF_RETURNS</td><td>Attribute definition for the number of returns. Default datatype is U8</td></tr>
+<tr><td>POINT_ID</td><td>Attribute definition for a point ID. Default datatype is U64</td></tr>
+<tr><td>POINT_SOURCE_ID</td><td>Attribute definition for a point source ID. Default datatype is U16</td></tr>
+<tr><td>POSITION_3D</td><td>Attribute definition for a 3D position. Default datatype is Vec3f64</td></tr>
+<tr><td>RETURN_NUMBER</td><td>Attribute definition for a return number. Default datatype is U8</td></tr>
+<tr><td>RETURN_POINT_WAVEFORM_LOCATION</td><td>Attribute definition for the return point waveform location in the LAS format. Default datatype is F32</td></tr>
+<tr><td>SCANNER_CHANNEL</td><td>Attribute definition for the scanner channel. Default datatype is U8</td></tr>
+<tr><td>SCAN_ANGLE</td><td>Attribute definition for a scan angle with extended precision (like in LAS format 1.4). Default datatype is I16</td></tr>
+<tr><td>SCAN_ANGLE_RANK</td><td>Attribute definition for a scan angle rank. Default datatype is I8</td></tr>
+<tr><td>SCAN_DIRECTION_FLAG</td><td>Attribute definition for a scan direction flag. Default datatype is Bool</td></tr>
+<tr><td>USER_DATA</td><td>Attribute definition for a user data field. Default datatype is U8</td></tr>
+<tr><td>WAVEFORM_DATA_OFFSET</td><td>Attribute definition for the offset to the waveform data in the LAS format. Default datatype is U64</td></tr>
+<tr><td>WAVEFORM_PACKET_SIZE</td><td>Attribute definition for the size of a waveform data packet in the LAS format. Default datatype is U32</td></tr>
+<tr><td>WAVEFORM_PARAMETERS</td><td>Attribute definition for the waveform parameters in the LAS format. Default datatype is Vector3</td></tr>
+<tr><td>WAVE_PACKET_DESCRIPTOR_INDEX</td><td>Attribute definition for the wave packet descriptor index in the LAS format. Default datatype is U8</td></tr>
+</tbody></table>
+</div>
+<h2 id="point-attribute-data-types"><a class="header" href="#point-attribute-data-types">Point attribute data types</a></h2>
+<p>The description of each built-in attribute includes a statement of the form "The default datatype is X". <code>pasture</code> makes an assumption what a good default datatype is for each attribute. Here are some examples:</p>
+<ul>
+<li><code>POSITION_3D</code> -&gt; <code>Vec3f64</code></li>
+<li><code>CLASSIFICATION</code> -&gt; <code>U8</code></li>
+<li><code>COLOR_RGB</code> -&gt; <code>Vec3u16</code></li>
+</ul>
+<p>These datatypes roughly correspond to primitive types that Rust supports, plus several vector types provided by <code>nalgebra</code>. <code>pasture</code> defines the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/enum.PointAttributeDataType.html"><code>PointAttributeDataType</code></a> enum, which constrains the valid datatypes for point attributes. It includes all integer and floating-point types up to and including 64 bits, some three- and four-component vector types (themselves of integers and floating-point values), as well as two special types <code>ByteArray(u64)</code> and <code>Custom{ ... }</code>. Each of these datatypes has a well-known binary representation and corresponds to a specific Rust type, which is what allows conversions between untyped memory (<code>[u8]</code>) and strongly typed attribute data. This correspondence is established using the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/trait.PrimitiveType.html"><code>PrimitiveType</code></a> trait, which is a trait that <code>pasture</code> implements for the Rust integer and floating-point primitive types and some of the <code>nalgebra</code> vector types. It allows code like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let datatype: PointAttributeDataType = f64::data_type();
+<span class="boring">}</span></code></pre></pre>
+<p>For memory safety, <code>pasture</code> uses the <a href="https://docs.rs/bytemuck/latest/bytemuck/"><code>bytemuck</code></a> crate, which ensures that all memory transmutations from and to untyped memory are safe. This is done by requiring that all <code>pasture</code> primitive types have to implement <a href="https://docs.rs/bytemuck/latest/bytemuck/trait.Pod.html"><code>bytemuck::Pod</code></a>. This has some interesting but also limiting side-effects, in particular it prevents <code>pasture</code> from supporting the Rust primitive type <code>bool</code>, which is not valid for any bit pattern (i.e. it is represented using 8 bits, but only the bit patterns <code>0</code> and <code>1</code> are valid). We will shortly see that this also has implications for which types of <code>struct</code>s you are allowed to use as point representations.</p>
+<h2 id="custom-attributes"><a class="header" href="#custom-attributes">Custom attributes</a></h2>
+<p>Besides the built-in attribute definitions, you can easily create your own point attributes using <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html#method.custom"><code>PointAttributeDefinition::custom</code></a>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let custom_attribute = PointAttributeDefinition::custom(Cow::Borrowed("Custom"), PointAttributeDataType::F32);
+<span class="boring">}</span></code></pre></pre>
+<p>It is a <code>const fn</code>, so you can create compile-time constant point attributes, which is precisely what all the built-in attribute definitions are! <code>pasture-io</code> uses the same mechanism to add LAS-specific attribute definitions, for example the <a href="https://docs.rs/pasture-io/0.4.0/pasture_io/las/constant.ATTRIBUTE_LOCAL_LAS_POSITION.html"><code>ATTRIBUTE_LOCAL_LAS_POSITION</code></a> which corresponds to a point position in the local space of a LAS file, represented using 32-bit signed integers:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub const ATTRIBUTE_LOCAL_LAS_POSITION: PointAttributeDefinition = PointAttributeDefinition::custom(
+    Cow::Borrowed("LASLocalPosition"),
+    PointAttributeDataType::Vec3i32,
+);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="from-attributes-to-pointlayout"><a class="header" href="#from-attributes-to-pointlayout">From attributes to <code>PointLayout</code></a></h2>
+<p>So far we saw how <code>pasture</code> represents a single point attribute. Now we will look at combining multiple point attributes into the full description of a point cloud, i.e. the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointLayout.html"><code>PointLayout</code></a> type! This will also answer the question why there are two types for point attributes in <code>pasture</code>!</p>
+<p>Recall the custom <code>Point</code> type that we wrote in the <a href="data_model.html">Data Model section</a>:</p>
+<pre><pre class="playground"><code class="language-rust  editable">use nalgebra::Vector3;
+
+type Position = Vector3&lt;f64&gt;;
+type Classification = u8;
+type Color = Vector3&lt;u8&gt;;
+type NumberOfReturnPulses = u8;
+
+type Point = (Position, Color, Classification, NumberOfReturnPulses);</code></pre></pre>
+<p>Let's restate it using <code>struct</code> syntax instead of tuple syntax:</p>
+<pre><pre class="playground"><code class="language-rust editable">struct Point {
+    pub position: Position, //Vector3&lt;f64&gt;
+    pub color: Color, //Vector3&lt;u8&gt;
+    pub classification: Classification, //u8
+    pub number_of_returns: NumberOfReturnPulses, //u8
+}</code></pre></pre>
+<p>To describe this point type in <code>pasture</code>, we first need one <code>PointAttributeDefinition</code> for each of the members:</p>
+<pre><pre class="playground"><code class="language-rust editable">use pasture_core::layout::attributes::*;
+
+let position_attribute = POSITION_3D;
+let color_attribute = COLOR_RGB.with_custom_datatype(PointAttributeDataType::Vec3u8);
+let classification_attribute = CLASSIFICATION;
+let number_of_returns_attribute = NUMBER_OF_RETURNS;</code></pre></pre>
+<p>We can use the built-in attribute definitions for every attribute, which is convenient. The only change is that <code>pasture</code> assumes RGB colors to be represented using the <code>Vec3u16</code> datatype (a convention taken from the LAS file format), but here we want 8-bit unsigned integers instead, so we modify the datatype to be <code>Vec3u8</code> instead. Note that this does not affect the global <code>COLOR_RGB</code> constant but instead creates a new <code>PointAttributeDefinition</code> instance.</p>
+<p>In order to combine these attributes into a <code>PointLayout</code>, we have to understand what the purpose of the <code>PointLayout</code> structure is: The <code>PointLayout</code> provides the information necessary to go from untyped memory to strongly typed attribute and point values! This means that it has to include all the information about the exact memory layout of each attribute as well as their relationship to each other, for example the order of the attributes within a point record. So if you write the following code, <code>pasture</code> needs to know how to execute it and whether it is correct or would violate memory safety:</p>
+<pre><pre class="playground"><code class="language-rust editable">let buffer: VectorBuffer = ...; // A buffer that stores `Point` values, obtained from somewhere
+// Get the color of the first point:
+let color = buffer.view_attribute::&lt;Vector3&lt;u8&gt;&gt;(&amp;color_attribute).at(0);</code></pre></pre>
+<p>Since <code>VectorBuffer</code> stores untyped memory internally (<code>Vec&lt;u8&gt;</code>), here is what <code>pasture</code> has to do:</p>
+<p><img src="figures/untyped_to_typed_memory.svg" alt="Picture illustrating how pasture goes from untyped memory to typed attributes" /></p>
+<p>The call <code>.at(0)</code> in the code example above translates to the instruction "Read 3 bytes at offset 24 and cast to <code>Vector3&lt;u8&gt;</code>" in the figure. It contains three pieces of information that are only known at runtime and which are included in the <code>PointLayout</code> type<label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"></input><span class="sidenote">The necessary information is actually calculated not only from the <code>PointLayout</code>, but also based on the memory layout of the point buffer, since offsets are calculated differently in interleaved memory layout vs. columnar memory layout. We will learn all about that in the section on <a href="point_buffers/memory_layout.html">buffer memory layouts</a>.</span>:</p>
+<ul>
+<li>The <em>read offset</em> (24 bytes)</li>
+<li>The <em>read size</em> (3 bytes)</li>
+<li>The static type that the memory should be interpreted<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"></input><span class="sidenote">Interpreted is the correct term here, because that is what all statically typed programming languages do: Static types provide the semantics for raw memory and hence define how memory regions are interpreted, from which follow the correct assembly instructions for reading from or writing to memory. If we write <code>let m = variable.member;</code>, it is the job of the compiler to figure out the correct instructions for reading the memory corresponding to <code>member</code> from the instance <code>variable</code> based on the static type of <code>variable</code>. The compiler does this at compile time, <code>pasture</code> does something similar at runtime!</span> as (<code>Vector3&lt;u8&gt;</code>)</li>
+</ul>
+<p>Two of the three properties are already included in the <code>PointAttributeDefinition</code> type: The read size is simply the size of the attribute datatype, and the static type is given by the user (<code>Vector3&lt;u8&gt;</code>) and has to correspond to the attribute datatype. <code>pasture</code> performs a runtime check in <code>view_attribute</code> to make sure that these two types match! The offset however is not known given only a <code>PointAttributeDefinition</code>. It depends on the <em>order of attributes</em> within the point type. Take a look at the following two point type definitions and try to figure out in which sense they are identical and in which sense they differ:</p>
+<pre><pre class="playground"><code class="language-rust editable">struct Point1 {
+    pub position: Position, //Vector3&lt;f64&gt;
+    pub color: Color, //Vector3&lt;u8&gt;
+    pub classification: Classification, //u8
+    pub number_of_returns: NumberOfReturnPulses, //u8
+}
+
+struct Point2 {
+    pub classification: Classification, //u8
+    pub color: Color, //Vector3&lt;u8&gt;
+    pub number_of_returns: NumberOfReturnPulses, //u8
+    pub position: Position, //Vector3&lt;f64&gt;
+}</code></pre></pre>
+<p>Both types have the exact same point attributes but in a different order. Even for attributes at the same index, such as the <code>color</code> attribute, their memory locations can differ. The actual offset is determined by the Rust compiler when calculating the <a href="https://doc.rust-lang.org/reference/type-layout.html#representations"><em>representation</em></a> of the type. The default algorithm is implementation-defined, but assuming a simple algorithm the offset of <code>Point1::color</code> might be 24 bytes (the size of the <code>position</code> field), whereas the offset of <code>Point2::color</code> might be 1 byte (the size of the <code>classification</code> field).</p>
+<p>If you want to know all the details about point type memory layout and how to manually build a <code>PointLayout</code>, read on! If you only care about something that works, skip to <a href="point_layout.html#using-the-derivepointtype-macro">"Using the <code>#[derive(PointType)]</code> macro"</a>.</p>
+<h2 id="details-of-point-memory-layouts"><a class="header" href="#details-of-point-memory-layouts">Details of point memory layouts</a></h2>
+<p>Getting the memory layout of a point type right is one of the more challenging aspects that <code>pasture</code> has to deal with. It matters most when going from untyped memory to user-defined point types, such as the <code>Point1</code> and <code>Point2</code> types from the previous example. Note that if you only ever access point data through the attribute views and never use the point views (which require a strongly typed point type such as <code>Point1</code>), most of these details will not concern you!</p>
+<p>We will now build a <code>PointLayout</code> from scratch for the <code>Point2</code> type and learn all about type representations and alignment requirements, as well as some details regarding memory transmutations. Time to have some fun!</p>
+<p>To make things a bit easier, we will use <code>f32</code> positions instead of <code>f64</code> so that the overall type has less bytes. This makes some of the figures easier to follow. Here is the updated <code>Point2</code> type:</p>
+<pre><pre class="playground"><code class="language-rust editable">struct Point2 {
+    pub classification: Classification, //u8
+    pub color: Color, //Vector3&lt;u8&gt;
+    pub number_of_returns: NumberOfReturnPulses, //u8
+    pub position: Position, //Vector3&lt;f32&gt; !!
+}</code></pre></pre>
+<p>First we have to figure out the size of each attribute, which we can then sum to get the total size of a single <code>Point2</code> instance in memory:</p>
+<ul>
+<li><code>classification</code> -&gt; <code>u8</code> -&gt; 1 byte</li>
+<li><code>color</code> -&gt; <code>Vector3&lt;u8&gt;</code> -&gt; semantically equivalent to <code>[u8; 3]</code> -&gt; 3 bytes</li>
+<li><code>number_of_returns</code> -&gt; <code>u8</code> -&gt; 1 byte</li>
+<li><code>position</code> -&gt; <code>Vector3&lt;f32&gt;</code> -&gt; semantically equivalent to <code>[f32; 3]</code> -&gt; 4*3 = 12 bytes</li>
+</ul>
+<p>If we sum everything together, we get 17 bytes. Let's see what <code>println!("{}", std::mem::size_of::&lt;Point2&gt;())</code> returns:</p>
+<pre><code>fn main() { 
+    println!("{}", std::mem::size_of::&lt;Point2&gt;());    
+}
+
+// Output: 20
+</code></pre>
+<p>The difference (which might vary depending on the compiler version and target platform) is due to the <a href="https://doc.rust-lang.org/reference/type-layout.html#representations">Rust rules for type representations</a>. Unfortunately, not only is the default type representation (the <code>Rust</code> representation) implementation-defined, there is not even a stabilized API for querying the offset of a variable within a type<label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"></input><span class="sidenote">There is <a href="https://doc.rust-lang.org/std/mem/macro.offset_of.html"><code>std::mem::offset_of!</code></a>, but it is nightly-only at the moment, and it is somewhat limited.</span>! For this reason, <code>pasture</code> does not support creating a <code>PointLayout</code> for a <code>struct</code> that uses the default <code>Rust</code> representation! Instead, all types that want to implement the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/trait.PointType.html"><code>PointType</code></a> trait---a trait required for the type to work with the point view function <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view"><code>view::&lt;T&gt;</code></a>---should use the <code>C</code> representation instead.</p>
+<div id="admonition-warning" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="point_layout.html#admonition-warning"></a></p>
+</div>
+<div>
+<p><code>pasture</code> does not enforce implementors of the <code>PointType</code> trait to use the <code>C</code> representation as the Rust language does not support such constraints. Correctly implementing the <code>PointLayout</code> for a type using the <code>Rust</code> representation will be impractical and is strongly discouraged. Even if you manage to do so, types with the <code>Rust</code> representation may contain padding bytes, which breaks the guarantees made by <code>bytemuck::NoUninit</code>!</p>
+</div>
+</div>
+<p>The <code>C</code> representation has a predictable algorithm for calculating the offsets of members within a <code>struct</code> (explained in detail <a href="https://doc.rust-lang.org/reference/type-layout.html#reprc-structs">here</a>) which we can use to figure out the correct offsets to all our point attributes. Unfortunately even with the <code>C</code> representation, the compiler is allowed to insert <em>padding bytes</em> which would break the requirements that <code>pasture</code> has which enable memory transmutations. To get rid of padding bytes, we have to use <code>#[repr(packed)]</code>, which removes any padding bytes. So we have to change our definition of the <code>Point2</code> type:</p>
+<pre><pre class="playground"><code class="language-rust editable">#[repr(C, packed)]
+struct Point2 {
+    pub classification: Classification, //u8
+    pub color: Color, //Vector3&lt;u8&gt;
+    pub number_of_returns: NumberOfReturnPulses, //u8
+    pub position: Position, //Vector3&lt;f32&gt;
+}</code></pre></pre>
+<p>Now <code>std::mem::size_of::&lt;Point2&gt;()</code> returns 17, as would be expected. The offset for each member can now be easily calculated as the size of all preceding members. Luckily, we don't have to do this by hand: The <code>PointLayout</code> type has a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointLayout.html#method.add_attribute"><code>add_attribute</code></a> function! So building a <code>PointLayout</code> for <code>Point2</code> works like this:</p>
+<pre><pre class="playground"><code class="language-rust editable">use pasture_core::layout::*;
+use pasture_core::layout::attributes::*;
+
+let mut layout = PointLayout::default();
+layout.add_attribute(CLASSIFICATION, FieldAlignment::Packed(1));
+layout.add_attribute(
+    COLOR_RGB.with_custom_datatype(PointAttributeDataType::Vec3u8), 
+    FieldAlignment::Packed(1));
+layout.add_attribute(NUMBER_OF_RETURNS, FieldAlignment::Packed(1));
+layout.add_attribute(
+    POSITION_3D.with_custom_datatype(PointAttributeDataType::Vec3f32), 
+    FieldAlignment::Packed(1));</code></pre></pre>
+<p>We use <code>FieldAlignment::Packed(1)</code> to prevent any padding bytes from being added<label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle"></input><span class="sidenote">Why does <code>pasture</code> support padding bytes in a <code>PointLayout</code> when manually adding attributes, if it is not supported to have a <code>PointType</code> that includes padding bytes? Because you are allowed to access individual attributes even if there is padding, since padding only affects the point view type (obtained by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view"><code>view::&lt;T&gt;</code></a> on the point buffer) but not the attribute views (obtained by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view_attribute"><code>view_attribute::&lt;T&gt;</code></a> on the buffer).</span> and end up with a <code>PointLayout</code> that correctly represents the memory representation of the <code>Point2</code> type. The calculated offset of each point attribute is stored within the <code>PointLayout</code> together with the <code>PointAttributeDefinition</code> using the second attribute type: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeMember.html"><code>PointAttributeMember</code></a>. A <code>PointAttributeMember</code> is therefore a specific instance of a point attribute within the memory layout of a point type. This distinction allows using the <code>PointAttributeDefinition</code> as a general identifier for attributes independent of any actual point type. Take a look at the two original point types <code>Point1</code> and <code>Point2</code> again:</p>
+<pre><pre class="playground"><code class="language-rust editable">struct Point1 {
+    pub position: Position, //Vector3&lt;f64&gt;
+    pub color: Color, //Vector3&lt;u8&gt;
+    pub classification: Classification, //u8
+    pub number_of_returns: NumberOfReturnPulses, //u8
+}
+
+struct Point2 {
+    pub classification: Classification, //u8
+    pub color: Color, //Vector3&lt;u8&gt;
+    pub number_of_returns: NumberOfReturnPulses, //u8
+    pub position: Position, //Vector3&lt;f64&gt;
+}</code></pre></pre>
+<p>Both types contain the same attributes but with different offsets. If we ask the question "Does type <code>X</code> have the point attribute <code>CLASSIFICATION</code>?", then we want the answer to be affirmative for both <code>Point1</code> and <code>Point2</code>. <code>PointAttributeDefinition</code> is the type for checking such a property. If we instead ask "At which byte offset lies the <code>CLASSIFICATION</code> attribute in type <code>X</code>?", we need the information encoded in the <code>PointAttributeMember</code>. You will rarely interact with this type directly, most of it is done by <code>pasture</code> internally.</p>
+<h2 id="using-the-derivepointtype-macro"><a class="header" href="#using-the-derivepointtype-macro">Using the <code>#[derive(PointType)]</code> macro</a></h2>
+<p>You don't have to create the correct <code>PointLayout</code> for your desired point type by hand. <code>pasture</code> supports a <code>#[derive(PointType)]</code> macro which auto-generates the correct <code>PointLayout</code> based on the memory layout of your <code>struct</code>. Let's look at <a href="https://github.com/Mortano/pasture/blob/main/pasture-core/examples/custom_point_type.rs">an example</a>:</p>
+<pre><pre class="playground"><code class="language-rust editable">#[derive(PointType, Clone, Copy, bytemuck::NoUninit, bytemuck::AnyBitPattern)]
+#[repr(C, packed)]
+struct CustomPointType {
+    #[pasture(BUILTIN_INTENSITY)]
+    pub intensity: u16,
+    #[pasture(BUILTIN_POSITION_3D)]
+    pub position: Vector3&lt;f32&gt;,
+    #[pasture(attribute = "CUSTOM_ATTRIBUTE")]
+    pub custom_attribute: f32,
+}</code></pre></pre>
+<p>The <code>CustomPointType</code> structure has three point attributes, each corresponding to one of the fields. To tell <code>pasture</code> which field represents which attribute, we have to annotate the fields with <code>#[pasture(X)]</code>, where <code>X</code> is either the name of a built-in attribute, or the special syntax <code>attribute = "name"</code> for custom attributes. The example shows both usage patterns. Built-in attribute names follow the structure <code>BUILTIN_X</code>, where <code>X</code> is the name of the corresponding attribute definition constant as found in the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/attributes/index.html"><code>layout::attributes</code> module</a>.</p>
+<p>Then we have to derive a lot of stuff. First, we derive <code>PointType</code>, which will implement the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/trait.PointType.html"><code>PointType</code></a> trait for us. This trait has a method <code>fn layout() -&gt; PointLayout</code> that returns the <code>PointLayout</code> for the type it is implemented on. In order to use the derive macro, our <code>struct</code> must adhere to the <code>pasture</code> requirements as described in the previous section:</p>
+<ul>
+<li>It must use the <code>C</code> representation (<code>#[repr(C)]</code>)</li>
+<li>It must not include any padding bytes (<code>#[repr(packed)]</code>)</li>
+<li>It must implement <code>bytemuck::NoUninit</code> and <code>bytemuck::AnyBitPattern</code>, which have derive macros of their own
+<ul>
+<li>This in turn requires that the type implements <code>Copy</code></li>
+<li><code>bytemuck::NoUninit</code> disallows padding bytes</li>
+<li><code>bytemuck::AnyBitPattern</code> disallows <code>bool</code>, <code>enum</code>s and any types that are not valid for all possible bit patterns</li>
+</ul>
+</li>
+<li>The data type of each field must be one of the supported <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/trait.PrimitiveType.html">primitive types</a></li>
+</ul>
+<p>These restrictions are quite severe but are necessary to allow safe memory transmutations in <code>pasture</code>. The resulting <code>PointLayout</code> looks like this:</p>
+<pre><code>PointLayout {
+    [Intensity;U16 @ offset 0]
+    [Position3D;Vec3&lt;f32&gt; @ offset 2]
+    [CUSTOM_ATTRIBUTE;F32 @ offset 14]
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="understanding-pasture-point-buffers-in-detail"><a class="header" href="#understanding-pasture-point-buffers-in-detail">Understanding <code>pasture</code> point buffers in detail</a></h1>
+<p>In this section you will learn all the nitty-gritty details of the point buffer types in <code>pasture</code>, so that you can write the most efficient point cloud code that your application requires. The point buffer explanation comes in three levels of detail:</p>
+<ol>
+<li><a href="point_buffers/builtin_types.html">An overview of the built-in point buffer types</a>: A hands-on look at the built-in buffer types that <code>pasture</code> provides, and how you can use them in your code. This subsection is focused on usage patterns and thus describes <em>how</em> to use the point buffer types, ignoring <em>why</em> they work the way they do.</li>
+<li>Explanations of the <a href="point_buffers/buffer_traits.html">buffer traits in <code>pasture</code></a>, including an explanation of the memory layout and ownership model. Here you will learn about all the point buffer traits that <code>pasture</code> exposes, why they are designed the way they are, and how you can choose the right buffer type for your application.</li>
+<li>A guide on <a href="">how to implement your own point buffer type</a></li>
+</ol>
+<p>There is also a <a href="point_buffers/buffer_slices.html">special section on <em>buffer slices</em></a>, which are similar to the Rust built-in slice type <code>[T]</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-built-in-point-buffer-types"><a class="header" href="#the-built-in-point-buffer-types">The built-in point buffer types</a></h1>
+<p><code>pasture</code> provides several built-in point buffer types that you can use in your application. These types are:</p>
+<ul>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.VectorBuffer.html"><code>VectorBuffer</code></a></li>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.HashMapBuffer.html"><code>HashMapBuffer</code></a></li>
+<li><a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.ExternalMemoryBuffer.html"><code>ExternalMemoryBuffer</code></a></li>
+</ul>
+<p>In this section you will learn about the capabilities of these three buffer types and when to use which. The code examples of this section can be found in the <a href="https://github.com/Mortano/pasture/blob/main/pasture-core/examples/basic_point_buffers.rs">basic point buffers example</a> in the <code>pasture</code> repository.</p>
+<h2 id="vectorbuffer---a-sensible-default"><a class="header" href="#vectorbuffer---a-sensible-default"><code>VectorBuffer</code> - A sensible default</a></h2>
+<p><code>VectorBuffer</code> is a point buffer that stores point data in a contiguous memory region using the Rust <code>Vec</code> type. We saw this buffer type in some of the previous examples. Just as <code>Vec</code> is the go-to data structure for most things in Rust, <code>VectorBuffer</code> is a sensible default for working with point cloud data. It closely resembles the type of data management that you might write yourself (think back to <code>Vec&lt;Point&gt;</code> in the <a href="point_buffers/../data_model.html">data model section</a>) if you want something that 'just works'.</p>
+<p>Here is how you can create a <code>VectorBuffer</code> for a custom point type:</p>
+<pre><pre class="playground"><code class="language-rust editable">/// This point type uses the #[derive(PointType)] macro to auto-generate an appropriate PointLayout
+#[repr(C, packed)]
+#[derive(Copy, Clone, PointType, Debug, bytemuck::NoUninit, bytemuck::AnyBitPattern)]
+struct SimplePoint {
+    #[pasture(BUILTIN_POSITION_3D)]
+    pub position: Vector3&lt;f64&gt;,
+    #[pasture(BUILTIN_INTENSITY)]
+    pub intensity: u16,
+}
+
+fn main() {
+    // Create some points
+    let points = vec![
+        SimplePoint {
+            position: Vector3::new(1.0, 2.0, 3.0),
+            intensity: 42,
+        },
+        SimplePoint {
+            position: Vector3::new(-1.0, -2.0, -3.0),
+            intensity: 84,
+        },
+    ];
+
+    // A VectorBuffer can be created from a PointLayout
+    let mut buffer = VectorBuffer::new_from_layout(SimplePoint::layout());
+    // We can push individual points through a (mutable) PointView:
+    buffer.view_mut().push_point(points[0]);
+    buffer.view_mut().push_point(points[1]);
+
+    // A more elegant solution is to collect the data from an iterator:
+    buffer = points.iter().copied().collect::&lt;VectorBuffer&gt;();
+}</code></pre></pre>
+<p>Recall that a <code>pasture</code> point buffer is always a combination of one or more memory regions with a <code>PointLayout</code>. The <code>new_from_layout</code> function is the way to default-construct most of the point buffer types in <code>pasture</code>. It is actually provided through a special trait called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.MakeBufferFromLayout.html"><code>MakeBufferFromLayout</code></a>.</p>
+<div id="admonition-info" class="admonition admonish-info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="point_buffers/builtin_types.html#admonition-info"></a></p>
+</div>
+<div>
+<p>Since all point buffers require a <code>PointLayout</code>, we can't use the <code>Default</code> trait to default-construct point buffers. <code>PointLayout</code> does implement <code>Default</code>, but the resulting <code>PointLayout</code> contains no point attributes. A point buffer with such a layout will never be able to hold any data, as the size of an empty <code>PointLayout</code> is zero! For this reason, <code>pasture</code> does not implement <code>Default</code> for the built-in point buffer types.</p>
+</div>
+</div>
+<p>Since a <code>VectorBuffer</code> stores points contiguously in memory, there are a couple of ways to access the point data, which correspond to what you would expect from a <code>Vec&lt;Point&gt;</code>:</p>
+<pre><pre class="playground"><code class="language-rust editable">// Iterate by value:
+for point in buffer.view::&lt;SimplePoint&gt;() {
+    println!("{:?}", point);
+}
+
+// Iterate by ref:
+for point_ref in buffer.view::&lt;SimplePoint&gt;().iter() {
+    println!("{:?}", point_ref);
+}
+
+// Iterate by mutable ref:
+for point_mut in buffer.view_mut::&lt;SimplePoint&gt;().iter_mut() {
+    point_mut.intensity *= 2;
+}</code></pre></pre>
+<p>All access to strongly typed point data requires the creation of a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html"><code>PointView</code></a> structure, which is done by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view"><code>view::&lt;T&gt;</code></a> on the buffer. For all buffer types, the <code>PointView</code> structure always supports accessing point data by value, so in line 2 the type of <code>point</code> is <code>SimplePoint</code>. The <code>VectorBuffer</code> is a buffer with <em>interleaved memory layout</em> (which is explained in-depth in the section on <a href="point_buffers/memory_layout.html">memory layouts</a>). This means that all data for a single point is stored contiguously in memory (just as it would in a <code>Vec&lt;SimplePoint&gt;</code>), which allows accessing point data through borrows as shown in line 7. The type of <code>point_ref</code> is thus <code>&amp;SimplePoint</code>. For mutable access, we have to use a second view type called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointViewMut.html"><code>PointViewMut</code></a> which is created by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedMutBuffer.html#method.view_mut"><code>view_mut::&lt;T&gt;</code></a> on the buffer. The type of <code>point_mut</code> in line 12 is thus <code>&amp;mut SimplePoint</code>.</p>
+<p>Note that the point view types also provide methods to access points by index, such as <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html#method.at"><code>at</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointViewMut.html#method.set_at"><code>set_at</code></a>.</p>
+<div id="admonition-info-1" class="admonition admonish-info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="point_buffers/builtin_types.html#admonition-info-1"></a></p>
+</div>
+<div>
+<p>The Rust language is limited when it comes to writing types that are generic over mutability, which is why there are two different point view types in <code>pasture</code>: One for immutable access and one for mutable access.</p>
+</div>
+</div>
+<p>Besides accessing point data through a <code>PointView</code>, we can also access individual attribute values through <em>attribute views</em>:</p>
+<pre><pre class="playground"><code class="language-rust editable">for position in buffer.view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D) {
+    println!("{position:?}");
+}</code></pre></pre>
+<p>The basic view type for attributes is <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.AttributeView.html"><code>AttributeView</code></a>, which is created by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view_attribute"><code>view_attribute::&lt;T&gt;</code></a> on a point buffer. The syntax is similar to that for creating point views. The only difference is that we have to tell <code>pasture</code> which attribute we want to access, which we do by passing a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/struct.PointAttributeDefinition.html"><code>PointAttributeDefinition</code></a> object to <code>view_attribute::&lt;T&gt;</code>. The resulting view then provides access to attribute values by value, so the <code>position</code> variable in this example is of type <code>Vector3&lt;f64&gt;</code> (the type we passed to <code>view_attribute::&lt;T&gt;</code>).</p>
+<p>There are also ways to access attribute data by immutable and mutable borrow, analogous to the point views, however the <code>VectorBuffer</code> type does not support these. If we want that, we need to use one of the other buffer types, which we will look at now!</p>
+<h2 id="hashmapbuffer---a-buffer-with-columnar-memory-layout"><a class="header" href="#hashmapbuffer---a-buffer-with-columnar-memory-layout"><code>HashMapBuffer</code> - A buffer with columnar memory layout</a></h2>
+<p>While the <code>VectorBuffer</code> is a sensible default, <code>pasture</code> supports more fine-grained control over the memory layout of point clouds. One common optimization is to move from an <em>interleaved memory layout</em> to a <em>columnar memory layout</em> (sometimes called <a href="https://en.wikipedia.org/wiki/AoS_and_SoA">structure of arrays (SoA)</a>). The following picture illustrates the difference between the two memory layouts:</p>
+<p><img src="point_buffers/../figures/aos_vs_soa_memory_layout.svg" alt="Picture showing the difference between interleaved (AoS) and columnar (SoA) memory layouts" /></p>
+<p>In a <code>HashMapBuffer</code>, all values that belong to the same attribute are stored together in memory using one <code>Vec&lt;u8&gt;</code>. So in the image above, all positions are in one vector, all colors in a second vector, and all classifications in a third vector. This is what allows accessing individual attributes by immutable and mutable borrow! First, let's construct a <code>HashMapBuffer</code>, which works exactly the same as constructing a <code>VectorBuffer</code>:</p>
+<pre><pre class="playground"><code class="language-rust editable">let points = vec![
+    SimplePoint {
+        position: Vector3::new(1.0, 2.0, 3.0),
+        intensity: 42,
+    },
+    SimplePoint {
+        position: Vector3::new(-1.0, -2.0, -3.0),
+        intensity: 84,
+    },
+];
+
+let mut buffer = HashMapBuffer::new_from_layout(SimplePoint::layout());
+buffer.view_mut().push_point(points[0]);
+buffer.view_mut().push_point(points[1]);
+
+buffer = points.into_iter().collect::&lt;HashMapBuffer&gt;();</code></pre></pre>
+<p>If we want to access the values of a specific point attribute, we have to use attribute views, with the notable difference that the <code>HashMapBuffer</code> supports attribute views with immutable and mutable access to individual attributes:</p>
+<pre><pre class="playground"><code class="language-rust editable">for intensity in buffer.view_attribute::&lt;u16&gt;(&amp;INTENSITY).iter() {
+    println!("{intensity}");
+}
+
+for intensity in buffer.view_attribute_mut::&lt;u16&gt;(&amp;INTENSITY).iter_mut() {
+    *intensity *= 2;
+}</code></pre></pre>
+<p>In line 1, the type of <code>intensity</code> is <code>&amp;u16</code>, in line 5 the type of <code>intensity</code> is <code>&amp;mut u16</code>. The latter allows in-place manipulation of attribute data.</p>
+<div id="admonition-tip" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="point_buffers/builtin_types.html#admonition-tip"></a></p>
+</div>
+<div>
+<p>We could achieve the same result by using a <code>VectorBuffer</code> and accessing the <code>intensity</code> field on the <code>SimplePoint</code> structure. The advantage of the columnar memory layout is that it is more cache-efficient, as all intensity values are stored together in memory, compared to the interleaved memory layout, where you always have 2 intensity bytes followed by 24 (unused) position bytes that are skipped over.</p>
+</div>
+</div>
+<p>The <code>HashMapBuffer</code> is especially useful if you do not have a corresponding <code>struct</code> definition for the <code>PointLayout</code> of your type. Reading LAS files is a good example for such a situation, as the actual memory layout of the points in the file is only known at runtime, and LAS even supports user-defined attributes. There is no way of creating a matching <code>struct</code> for every possible LAS point memory layout, so <code>pasture</code> builds a matching <code>PointLayout</code> dynamically at runtime. As a consequence, we can't use point views because we don't have a corresponding <code>PointType</code> that we can pass to <code>view::&lt;T&gt;</code><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"></input><span class="sidenote">There are exceptions of course. The LAS format in version 1.4 defines 11 point formats with well-known memory layouts, for which <code>pasture</code> does provide <a href="https://docs.rs/pasture-io/latest/pasture_io/las/struct.LasPointFormat0.html"><code>struct</code> definitions</a>. If the memory layout of a file matches one of these memory layouts and does not have user-defined attributes, point views can be used. </span>. We thus have to access point data through attribute views, which is more efficient with a <code>HashMapBuffer</code> than with a <code>VectorBuffer</code>.</p>
+<div id="admonition-tip-1" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="point_buffers/builtin_types.html#admonition-tip-1"></a></p>
+</div>
+<div>
+<p>We haven't yet covered <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/layout/conversion/struct.BufferLayoutConverter.html"><em>point layout conversions</em></a>, but these are also more efficient when converting between <code>HashMapBuffers</code> due to cache efficiency.</p>
+</div>
+</div>
+<h2 id="a-glimpse-at-externalmemorybuffer"><a class="header" href="#a-glimpse-at-externalmemorybuffer">A glimpse at <code>ExternalMemoryBuffer</code></a></h2>
+<p>The last built-in buffer type is experimental and subject to change. It is called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.ExternalMemoryBuffer.html"><code>ExternalMemoryBuffer</code></a> and does what the name suggests: It refers to an <em>external</em> memory location that the buffer does NOT own itself. It works like <code>VectorBuffer</code>, except the underlying memory block is not a <code>Vec&lt;u8&gt;</code> but instead a <code>&amp;[u8]</code> (or <code>&amp;mut [u8]</code>). It allows structuring a piece of external memory as a point buffer with a known <code>PointLayout</code>, which is useful in situations where you want to read from or write to a memory region that you obtain from some external source. The two main examples that come to mind here are:</p>
+<ul>
+<li>Using memory mapped I/O, where the memory mapping systems call (e.g. <a href="point_buffers/"><code>mmap</code></a>) returns a pointer to a memory region, which we want to treat as a point buffer. There is a <a href="https://github.com/Mortano/pasture/blob/main/pasture-io/examples/fast_las_parsing.rs"><code>pasture</code> example</a> for using this to view the contents of a LAS file as a point buffer.</li>
+<li>Doing GPGPU computations, where you have to copy data from/to GPU buffers, which are obtained through special API calls that return a pointer</li>
+</ul>
+<p>As this type is experimental, we won't cover it in more detail.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-buffer-traits-that-pasture-exposes"><a class="header" href="#the-buffer-traits-that-pasture-exposes">The buffer traits that <code>pasture</code> exposes</a></h1>
+<p>While <code>pasture</code> has only three primary built-in buffer types at the moment, it exposes a hierarchy of buffer traits that define the memory layout and ownership model that <code>pasture</code> is built around. In this section you will learn about all the different buffer traits and gain a deeper understanding of how <code>pasture</code> treats point cloud memory.</p>
+<h2 id="memory-layout-vs-ownership"><a class="header" href="#memory-layout-vs-ownership">Memory layout vs. ownership</a></h2>
+<p>At its core, <code>pasture</code> distinguishes between two properties of a point buffer: Its <strong>memory layout</strong> and its <strong>memory ownership model</strong>. Each of these two properties comes in several 'flavors' which can (for the most part) be freely combined, resulting in a large number of potential buffer types. The following image shows the full buffer trait hierarchy in <code>pasture</code>:</p>
+<p><img src="point_buffers/../figures/buffer_trait_hierarchy.svg" alt="Image showing the buffer trait hierarchy in pasture" /></p>
+<p>For the memory ownership, <code>pasture</code> distinguishes between three types of ownership:</p>
+<ul>
+<li>A buffer immutably borrows its memory. This is the weakest guarantee and represented by the base trait <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html"><code>BorrowedBuffer&lt;'a&gt;</code></a></li>
+<li>A buffer mutably borrows its memory. This is the next stronger guarantee and represented by the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedMutBuffer.html"><code>BorrowedMutBuffer&lt;'a&gt;</code></a> trait</li>
+<li>A buffer owns its memory. This is the strongest guarantee and represented by the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.OwningBuffer.html"><code>OwningBuffer&lt;'a&gt;</code></a> trait</li>
+</ul>
+<p>Each stronger ownership guarantee implies all weaker guarantees, which is why <code>OwningBuffer&lt;'a&gt;</code> is a supertrait of <code>BorrowedMutBuffer&lt;'a&gt;</code>, which in turn is a supertrait of <code>BorrowedBuffer&lt;'a&gt;</code>. This also explains why <code>OwningBuffer&lt;'a&gt;</code> has a lifetime bound: <code>BorrowedBuffer&lt;'a&gt;</code> requires a lifetime bound to tell the borrow checker for which lifetime <code>'a</code> the memory is borrowed, and this propagates to all supertraits.</p>
+<p>For the memory layout, there are three options:</p>
+<ul>
+<li>An unspecified memory layout, which only allows accessing points and attributes by value (through copy operations). This is the memory layout guarantee that <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html"><code>BorrowedBuffer&lt;'a&gt;</code></a> has</li>
+<li>An <em>interleaved</em> memory layout, which allows accessing point data by reference/borrow. Mutable access requires a mutable ownership model, which is why <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.InterleavedBuffer.html"><code>InterleavedBuffer&lt;'a&gt;</code></a> is only a supertrait of <code>BorrowedBuffer&lt;'a&gt;</code> and provides only immutable point access, whereas <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.InterleavedBufferMut.html"><code>InterleavedBufferMut&lt;'a&gt;</code></a> is a supertrait of <code>BorrowedMutBuffer&lt;'a&gt;</code> and allows mutably borrowing points.</li>
+<li>A <em>columnar</em> memory layout, which allows accessing attribute data by reference/borrow. Analogous to the interleaved layout traits, <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.ColumnarBuffer.html"><code>ColumnarBuffer&lt;'a&gt;</code></a> only allows immutable borrows and thus is a supertrait of <code>BorrowedBuffer&lt;'a&gt;</code>, whereas <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.ColumnarBufferMut.html"><code>ColumnarBufferMut&lt;'a&gt;</code></a> is a supertrait of <code>BorrowedMutBuffer&lt;'a&gt;</code> and allows mutably borrowing attribute values.</li>
+</ul>
+<p>Here are some examples of existing buffer types and which traits they implement:</p>
+<ul>
+<li><code>VectorBuffer</code> owns its memory (since it uses a <code>Vec&lt;u8&gt;</code>) and stores data in interleaved layout, so it implements:
+<ul>
+<li><code>OwningBuffer&lt;'a&gt;</code> (and thus also <code>BorrowedMutBuffer&lt;'a&gt;</code> and <code>BorrowedBuffer&lt;'a&gt;</code>)</li>
+<li><code>InterleavedBuffer&lt;'a&gt;</code> and <code>InterleavedBufferMut&lt;'a&gt;</code></li>
+</ul>
+</li>
+<li><code>HashMapBuffer</code> owns its memory (using a <code>HashMap</code> with <code>Vec&lt;u8&gt;</code> values) and stores data in a columnar layout, so it implements:
+<ul>
+<li><code>OwningBuffer&lt;'a&gt;</code> (and thus also <code>BorrowedMutBuffer&lt;'a&gt;</code> and <code>BorrowedBuffer&lt;'a&gt;</code>)</li>
+<li><code>ColumnarBuffer&lt;'a&gt;</code> and <code>ColumnarBufferMut&lt;'a&gt;</code></li>
+</ul>
+</li>
+<li><code>ExternalMemoryBuffer&lt;T&gt;</code> does <em>not</em> own its memory (the whole point of this buffer type!) and stores data in interleaved layout, so it implements:
+<ul>
+<li><code>BorrowedBuffer&lt;'a&gt;</code></li>
+<li><code>BorrowedMutBuffer&lt;'a&gt;</code> only if the memory region type <code>T</code> is mutably borrowed</li>
+<li><code>InterleavedBuffer&lt;'a&gt;</code> and—if the memory region type <code>T</code> is mutably borrowed—<code>InterleavedBufferMut&lt;'a&gt;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="the-root-trait-borrowedbuffera"><a class="header" href="#the-root-trait-borrowedbuffera">The root trait <code>BorrowedBuffer&lt;'a&gt;</code></a></h2>
+<p>All point buffers in <code>pasture</code> implement the root trait <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html"><code>BorrowedBuffer&lt;'a&gt;</code></a>, so it makes sense to take a closer look at it. Here is the trait definition (without provided methods):</p>
+<pre><pre class="playground"><code class="language-rust editable">pub trait BorrowedBuffer&lt;'a&gt; {
+    // Required methods
+    fn len(&amp;self) -&gt; usize;
+    fn point_layout(&amp;self) -&gt; &amp;PointLayout;
+    fn get_point(&amp;self, index: usize, data: &amp;mut [u8]);
+    fn get_point_range(&amp;self, range: Range&lt;usize&gt;, data: &amp;mut [u8]);
+    unsafe fn get_attribute_unchecked(
+        &amp;self,
+        attribute_member: &amp;PointAttributeMember,
+        index: usize,
+        data: &amp;mut [u8]
+    );
+}</code></pre></pre>
+<p>The first two methods it defines are not strictly related to memory ownership or layout and instead are fundamental properties of all point buffers: Each buffer as a <code>PointLayout</code> and stores some number of points. These can be accessed through <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#tymethod.point_layout"><code>fn point_layout(&amp;self) -&gt; &amp;PointLayout</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#tymethod.len"><code>fn len(&amp;self) -&gt; usize</code></a> respectively.</p>
+<p>The next three methods are the most fundamental accessor methods for point and attribute data in a point buffer. As a user, you will rarely interact with these methods directly as they work exclusively with untyped memory (in the form of byte slices <code>[u8]</code>). Let's first look at accessing point data:</p>
+<pre><pre class="playground"><code class="language-rust editable">fn get_point(&amp;self, index: usize, data: &amp;mut [u8]);
+fn get_point_range(&amp;self, range: Range&lt;usize&gt;, data: &amp;mut [u8]);</code></pre></pre>
+<p>These functions copy the data for a single point (<code>get_point</code>) or a range of consecutive points (<code>get_point_range</code>) into a user-defined byte buffer. Since we are still in untyped land, the signature is <code>fn get_point(&amp;self, index: usize, data: &amp;mut [u8])</code> and not <code>fn get_point&lt;T: PointType&gt;(&amp;self, index: usize) -&gt; T</code>.</p>
+<div id="admonition-hint" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Hint</p>
+<p><a class="admonition-anchor-link" href="point_buffers/buffer_traits.html#admonition-hint"></a></p>
+</div>
+<div>
+<p>The signature <code>fn get_point&lt;T: PointType&gt;(&amp;self, index: usize) -&gt; T</code> would make the <code>BorrowedBuffer&lt;'a&gt;</code> trait object-unsafe, so we could never create trait objects from it. This would be an unnecessary limitation. Instead, this is what the views do: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html#method.at"><code>PointView::at</code></a> has exactly this signature, except that the type <code>T</code> is part of the <code>PointView</code> type.</p>
+</div>
+</div>
+<p>Working with untyped memory might seem terribly unsafe, but <code>pasture</code> hides a lot of the unsafety. The only requirement for calling <code>get_point</code> or <code>get_point_range</code> is that the memory buffer passed into these functions has to be large enough to store the requested point data. In that regard it is similar to calling <a href="https://doc.rust-lang.org/std/io/trait.Read.html#tymethod.read"><code>Read::read</code></a>, a common function in Rust.</p>
+<p>A more complex function is the accessor for attribute data:</p>
+<pre><pre class="playground"><code class="language-rust editable">unsafe fn get_attribute_unchecked(
+    &amp;self,
+    attribute_member: &amp;PointAttributeMember,
+    index: usize,
+    data: &amp;mut [u8]
+);</code></pre></pre>
+<p>This is an <code>unsafe</code> function because it is an optimized accessor that bypasses checks (hence the <code>unchecked</code> suffix, a common pattern in Rust). It is the faster but more unsafe variant of <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.get_attribute"><code>get_attribute</code></a>. It copies the data for a specific point attribute of the point at <code>index</code> into the user-provided buffer. Accessing this data might require knowledge of the offset of the point attribute within the <code>PointLayout</code>, which is why <code>get_attribute_unchecked</code> requires a <code>PointAttributeMember</code> instead of the more general <code>PointAttributeDefinition</code>.</p>
+<p>A neat thing is that both <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.get_attribute"><code>get_attribute</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.get_attribute_range"><code>get_attribute_range</code></a> (for getting attribute values for multiple consecutive points) can be implemented using <code>get_attribute</code>, so implementors of <code>BorrowedBuffer&lt;'a&gt;</code> only need to provide one method instead of two.</p>
+<div id="admonition-hint-1" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Hint</p>
+<p><a class="admonition-anchor-link" href="point_buffers/buffer_traits.html#admonition-hint-1"></a></p>
+</div>
+<div>
+<p>Notice that every buffer access method of <code>BorrowedBuffer&lt;'a&gt;</code> requires copying the point/attribute data! This is precisely what it means to have an unspecified memory layout: No guarantee can be made that it is possible to access points or attributes through references, so we have to resort to copying! Examples of buffer types that cannot make guarantees about their memory layout would be buffers sorting data in disjoint memory regions (e.g. using a linked list) or buffers generating data on the fly.</p>
+</div>
+</div>
+<p>Based on these three accessor functions, a bunch of provided functions are implemented:</p>
+<pre><pre class="playground"><code class="language-rust editable">fn get_attribute(
+    &amp;self,
+    attribute: &amp;PointAttributeDefinition,
+    index: usize,
+    data: &amp;mut [u8]
+) { ... }
+fn get_attribute_range(
+    &amp;self,
+    attribute: &amp;PointAttributeDefinition,
+    point_range: Range&lt;usize&gt;,
+    data: &amp;mut [u8]
+) { ... }
+fn view&lt;'b, T: PointType&gt;(&amp;'b self) -&gt; PointView&lt;'a, 'b, Self, T&gt;
+    where Self: Sized,
+            'a: 'b { ... }
+fn view_attribute&lt;'b, T: PrimitiveType&gt;(
+    &amp;'b self,
+    attribute: &amp;PointAttributeDefinition
+) -&gt; AttributeView&lt;'a, 'b, Self, T&gt;
+    where Self: Sized,
+            'a: 'b { ... }
+fn view_attribute_with_conversion&lt;'b, T: PrimitiveType&gt;(
+    &amp;'b self,
+    attribute: &amp;PointAttributeDefinition
+) -&gt; Result&lt;AttributeViewConverting&lt;'a, 'b, Self, T&gt;&gt;
+    where Self: Sized,
+            'a: 'b { ... }</code></pre></pre>
+<p>We already saw <code>get_attribute</code> and <code>get_attribute_range</code>, and in previous examples also <code>view</code> and <code>view_attribute</code>. The latter return the <code>PointView</code> and <code>AttributeView</code> types, which internally use the raw data accessor functions to convert untyped memory into typed values. There is one special view type that we haven't talked about: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.AttributeViewConverting.html"><code>AttributeViewConverting</code></a>.</p>
+<h2 id="converting-attributes"><a class="header" href="#converting-attributes">Converting attributes</a></h2>
+<p>The <code>view_attribute</code> function is very strict: It requires that the <code>PointAttributeDefinition</code> passed in <em>exactly matches</em> the definition in the <code>PointLayout</code> of the buffer. This means that both the name <em>and</em> the datatype must match! <code>pasture</code> checks this at runtime and panics if this invariant is not met! Here is an example why this can be problematic:</p>
+<pre><pre class="playground"><code class="language-rust editable">#[derive(PointType, Clone, Copy, bytemuck::NoUninit, bytemuck::AnyBitPattern)]
+#[repr(C, packed)]
+struct CustomPointType {
+    #[pasture(BUILTIN_INTENSITY)]
+    pub intensity: u16,
+    #[pasture(BUILTIN_POSITION_3D)]
+    pub position: Vector3&lt;f32&gt;,
+    #[pasture(attribute = "CUSTOM_ATTRIBUTE")]
+    pub custom_attribute: f32,
+}</code></pre></pre>
+<p>The <code>CustomPointType</code> type (from the <a href="point_buffers/../point_layout.html">point layout section</a>) stores a <code>POSITION_3D</code> attribute, but with a different datatype than the default one (<code>Vector3&lt;f32&gt;</code> instead of <code>Vector3&lt;f64&gt;</code>). Calling <code>view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D)</code> on a buffer with the <code>CustomPointType</code> layout will panic! Calling <code>view_attribute::&lt;Vector3&lt;f32&gt;&gt;(&amp;POSITION_3D)</code> (<code>f32</code> instead of <code>f64</code>) will panic as well!</p>
+<div id="admonition-warning" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="point_buffers/buffer_traits.html#admonition-warning"></a></p>
+</div>
+<div>
+<p>This may seem annoying, but is due to safety reasons! The resulting view type performs raw memory transmutations, which are amongst the most unsafe things that you can do in Rust. So <code>pasture</code> has to make absolutely sure that these transmutations are valid, which they only are if we view the untyped memory in the exact types specified in the buffer's <code>PointLayout</code>!</p>
+</div>
+</div>
+<p>There is a way to deal with this problem: We could convert from <code>Vector3&lt;f64&gt;</code> to <code>Vector3&lt;f32&gt;</code>, accepting a loss of precision. In fact, there are a bunch of possible conversions, essentially everything that the <a href="https://doc.rust-lang.org/std/keyword.as.html"><code>as</code> operator</a> allows, which we can lift to the <code>nalgebra</code> vector types. If we want such a conversion, <code>pasture</code> still has to do an initial memory transmutation to the actual type of the attribute, but then it can apply an <code>as</code> transformation. This is precisely what <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view_attribute_with_conversion"><code>view_attribute_with_conversion</code></a> does: It returns a view over attribute values in the strong type <code>T: PrimitiveType</code>, even if <code>T</code> is different from the datatype of the attribute within the buffer. Not all conversions are valid, for example vector-to-scalar conversions, which is why this function returns a <code>Result</code>. Since the resulting attribute view performs conversions, it only ever supports accessing attribute data by value.</p>
+<h2 id="mutable-access-to-buffer-data-using-borrowedmutbuffera"><a class="header" href="#mutable-access-to-buffer-data-using-borrowedmutbuffera">Mutable access to buffer data using <code>BorrowedMutBuffer&lt;'a&gt;</code></a></h2>
+<p>Let's look at the <code>BorrowedMutBuffer&lt;'a&gt;</code> type and the additional methods it provides. First, here are the required methods:</p>
+<pre><pre class="playground"><code class="language-rust editable">pub trait BorrowedMutBuffer&lt;'a&gt;: BorrowedBuffer&lt;'a&gt; {
+    // Required methods
+    unsafe fn set_point(&amp;mut self, index: usize, point_data: &amp;[u8]);
+    unsafe fn set_point_range(
+        &amp;mut self,
+        point_range: Range&lt;usize&gt;,
+        point_data: &amp;[u8]
+    );
+    unsafe fn set_attribute(
+        &amp;mut self,
+        attribute: &amp;PointAttributeDefinition,
+        index: usize,
+        attribute_data: &amp;[u8]
+    );
+    unsafe fn set_attribute_range(
+        &amp;mut self,
+        attribute: &amp;PointAttributeDefinition,
+        point_range: Range&lt;usize&gt;,
+        attribute_data: &amp;[u8]
+    );
+    fn swap(&amp;mut self, from_index: usize, to_index: usize);
+}</code></pre></pre>
+<p>Where previously we had a bunch of get-accessors, here we see set-methods for points and attributes as well as ranges thereof. There is also <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedMutBuffer.html#tymethod.swap"><code>swap</code></a> for swapping the point data at to indices (very helpful for implementing sorting).</p>
+<div id="admonition-accessing-ranges-of-points" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Accessing ranges of points</p>
+<p><a class="admonition-anchor-link" href="point_buffers/buffer_traits.html#admonition-accessing-ranges-of-points"></a></p>
+</div>
+<div>
+<p>The <code>get</code> and <code>set</code> functions on the basic buffer traits come in two flavors: Accessing individual pieces of data (e.g. <code>set_point</code>, <code>set_attribute</code>) and accessing ranges of data (e.g. <code>set_point_range</code>, <code>set_attribute_range</code>). If you have to access consecutive points or attributes, prefer to use the range accessors instead of multiple calls to the individual accessors!</p>
+</div>
+</div>
+<p>Notice that all four set-methods are <code>unsafe</code>! They have to be, because <code>pasture</code> has no way of checking whether the data passed into these functions actually corresponds to the memory layout of the buffer! For this reason, you have to be <em>very</em> careful when calling these functions directly. Again, a lot of the unsafety is hidden by using point and attribute views.</p>
+<p>Similar to <code>BorrowedBuffer&lt;'a&gt;</code>, a bunch of helper functions are provided:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn transform_attribute&lt;'b, T: PrimitiveType, F: Fn(usize, T) -&gt; T&gt;(
+    &amp;'b mut self,
+    attribute: &amp;PointAttributeDefinition,
+    func: F
+)
+    where Self: Sized,
+            'a: 'b { ... }
+fn view_mut&lt;'b, T: PointType&gt;(&amp;'b mut self) -&gt; PointViewMut&lt;'a, 'b, Self, T&gt;
+    where Self: Sized,
+            'a: 'b { ... }
+fn view_attribute_mut&lt;'b, T: PrimitiveType&gt;(
+    &amp;'b mut self,
+    attribute: &amp;PointAttributeDefinition
+) -&gt; AttributeViewMut&lt;'a, 'b, Self, T&gt;
+    where Self: Sized,
+            'a: 'b { ... }
+<span class="boring">}</span></code></pre></pre>
+<p>We have mutable view accessors (<a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedMutBuffer.html#method.view_mut"><code>view_mut</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedMutBuffer.html#method.view_attribute_mut"><code>view_attribute_mut</code></a>) as well as one special function <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedMutBuffer.html#method.transform_attribute"><code>transform_attribute</code></a>. This special function allows in-place manipulation of all values of a specific attribute. It is a more efficient version of the following code:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut buffer = ...;
+let mut view = buffer.view_attribute_mut::&lt;u16&gt;(&amp;INTENSITY);
+for index in 0..buffer.len() {
+    let mut intensity = view.at(index);
+    intensity *= 2; // Apply some transformation to the intensity value
+    view.set_at(index, intensity);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This <code>at</code>/<code>set_at</code> pattern is necessary because <code>BorrowedMutBuffer&lt;'a&gt;</code> does not know anything about the memory layout of its implementor, so it only provides data access by value. To mutate a value, we have to copy it out of the buffer (using <code>at</code>) and then write the mutated value back into the buffer (using <code>set_at</code>). The same can be achieved using <code>transform_attribute</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut buffer = ...;
+buffer.transform_attribute(&amp;INTENSITY, |_index: usize, intensity: u16| -&gt; u16 {
+    intensity * 2
+});
+<span class="boring">}</span></code></pre></pre>
+<h2 id="resizing-buffers-using-the-owningbuffera-trait"><a class="header" href="#resizing-buffers-using-the-owningbuffera-trait">Resizing buffers using the <code>OwningBuffer&lt;'a&gt;</code> trait</a></h2>
+<p>The last memory ownership trait is <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.OwningBuffer.html"><code>OwningBuffer&lt;'a&gt;</code></a>. A buffer that implements this trait is the owner of its memory, which means that we can resize this buffer. Let's look at the required methods:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait OwningBuffer&lt;'a&gt;: BorrowedMutBuffer&lt;'a&gt; + Sized {
+    // Required methods
+    unsafe fn push_points(&amp;mut self, point_bytes: &amp;[u8]);
+    fn resize(&amp;mut self, count: usize);
+    fn clear(&amp;mut self);
+    fn append_interleaved&lt;'b, B: InterleavedBuffer&lt;'b&gt;&gt;(&amp;mut self, other: &amp;B);
+    fn append_columnar&lt;'b, B: ColumnarBuffer&lt;'b&gt;&gt;(&amp;mut self, other: &amp;B);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>It provides three general resizing functions that are similar to those that <code>Vec</code> provides: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.OwningBuffer.html#tymethod.push_points"><code>push_points</code></a>, <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.OwningBuffer.html#tymethod.resize"><code>resize</code></a>, and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.OwningBuffer.html#tymethod.clear"><code>clear</code></a>.</p>
+<p><code>push_points</code> is the resizing variant of <code>set_point_range</code> from the <code>BorrowedMutBuffer&lt;'a&gt;</code> trait: It appends the provided points to the end of the buffer. It is <code>unsafe</code> because it can't check whether the memory passed to it conforms to the <code>PointLayout</code> of the buffer.</p>
+<p><code>resize</code> and <code>clear</code> follow the same logic as their identically-named counterparts in <code>Vec</code>: <code>resize</code> resizes the buffer so that it contains the given number of points, default-constructing new points as needed. This works since all point types in pasture are zero-initializable. <code>clear</code> clears the contents of the buffer so that its new length is 0.</p>
+<p>There are two <code>append_...</code> functions, which take a buffer in a specified memory layout (interleaved or columnar) and appends the points from this buffer to the current buffer. The distinction regarding the memory layout can enable faster copy operations, as appending to a buffer with the same memory layout will be more efficient as appending to a buffer with a different memory layout. There is also a provided function <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.OwningBuffer.html#method.append"><code>append</code></a>, which does not make assumptions regarding the memory layout of the buffer that shall be appended. It is easier to use but generally will have worse performance.</p>
+<h2 id="the-memory-layout-traits"><a class="header" href="#the-memory-layout-traits">The memory layout traits</a></h2>
+<p>The memory ownership traits made no assumptions about the memory layout of a point buffer. <code>pasture</code> does however support two specific memory layouts natively: <em>Interleaved</em> and <em>columnar</em>. We already saw the two default buffer types corresponding to these layouts in the section on <a href="point_buffers/./builtin_types.html">built-in buffer types</a>: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.VectorBuffer.html"><code>VectorBuffer</code></a> is the default interleaved buffer, and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.HashMapBuffer.html"><code>HashMapBuffer</code></a> the default columnar buffer. Both memory layouts have their own traits, which we will look at in the remainder of this section. As a recap, here is a picture showing the difference between interleaved and columnar memory layout:</p>
+<p><img src="point_buffers/../figures/aos_vs_soa_memory_layout.svg" alt="Picture showing the difference between interleaved (AoS) and columnar (SoA) memory layouts" /></p>
+<h3 id="interleaved-buffers-and-the-interleavedbuffera-trait"><a class="header" href="#interleaved-buffers-and-the-interleavedbuffera-trait">Interleaved buffers and the <code>InterleavedBuffer&lt;'a&gt;</code> trait</a></h3>
+<p>All interleaved buffers in <code>pasture</code> implement the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.InterleavedBuffer.html"><code>InterleavedBuffer&lt;'a&gt;</code></a> trait. Here is how it looks like:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait InterleavedBuffer&lt;'a&gt;: BorrowedBuffer&lt;'a&gt; {
+    // Required methods
+    fn get_point_ref&lt;'b&gt;(&amp;'b self, index: usize) -&gt; &amp;'b [u8]
+       where 'a: 'b;
+    fn get_point_range_ref&lt;'b&gt;(&amp;'b self, range: Range&lt;usize&gt;) -&gt; &amp;'b [u8]
+       where 'a: 'b;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>It is a supertrait of the basic buffer trait <code>BorrowedBuffer&lt;'a&gt;</code> and adds two new accessor methods: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.InterleavedBuffer.html#tymethod.get_point_ref"><code>get_point_ref</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.InterleavedBuffer.html#tymethod.get_point_range_ref"><code>get_point_range_ref</code></a>. They provide by-reference access to individual points and ranges of points, which is precisely what 'interleaved memory layout' means. These functions return raw byte slices (i.e. the raw memory of the points) but they are what enables the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html#method.at_ref"><code>at_ref</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html#method.iter"><code>iter</code></a> functions of point views!</p>
+<div id="admonition-borrowing-from-a-borrowed-buffer" class="admonition admonish-tip">
+<div class="admonition-title">
+<p>Borrowing from a borrowed buffer</p>
+<p><a class="admonition-anchor-link" href="point_buffers/buffer_traits.html#admonition-borrowing-from-a-borrowed-buffer"></a></p>
+</div>
+<div>
+<p><code>InterleavedBuffer&lt;'a&gt;</code> allows borrowing data from a buffer, which itself might borrow its memory. For this reason, <code>get_point_ref</code> and <code>get_point_range_ref</code> have more complex lifetime bounds: They borrow data for some lifetime <code>'b</code>, which is at most as long as lifetime <code>'a</code>. This is expressed through <code>where 'a: 'b</code>, which can be read as "<code>'a</code> must life at least as long as <code>'b</code>". This allows borrowing point data for short lifetimes than <code>'a</code>, which can sometimes be necessary.</p>
+</div>
+</div>
+<p>There is also one provided helper method on the <code>InterleavedBuffer&lt;'a&gt;</code> trait:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn view_raw_attribute&lt;'b&gt;(
+    &amp;'b self,
+    attribute: &amp;PointAttributeMember
+) -&gt; RawAttributeView&lt;'b&gt;
+    where 'a: 'b { ... }
+<span class="boring">}</span></code></pre></pre>
+<p>It returns a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.RawAttributeView.html">more efficient accessor</a> for the values of a specific attribute compared to calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.get_attribute"><code>get_attribute</code></a> multiple times.</p>
+<p>For buffers that provide mutable access to their memory, there is a mutable variant of <code>InterleavedBuffer&lt;'a&gt;</code>, called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.InterleavedBufferMut.html"><code>InterleavedBufferMut&lt;'a&gt;</code></a>. It looks similar to <code>InterleavedBuffer&lt;'a&gt;</code>, except that all methods return mutable borrows:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait InterleavedBufferMut&lt;'a&gt;: InterleavedBuffer&lt;'a&gt; + BorrowedMutBuffer&lt;'a&gt; {
+    // Required methods
+    fn get_point_mut&lt;'b&gt;(&amp;'b mut self, index: usize) -&gt; &amp;'b mut [u8]
+       where 'a: 'b;
+    fn get_point_range_mut&lt;'b&gt;(
+        &amp;'b mut self,
+        range: Range&lt;usize&gt;
+    ) -&gt; &amp;'b mut [u8]
+       where 'a: 'b;
+
+    // Provided method
+    fn view_raw_attribute_mut&lt;'b&gt;(
+        &amp;'b mut self,
+        attribute: &amp;PointAttributeMember
+    ) -&gt; RawAttributeViewMut&lt;'b&gt;
+       where 'a: 'b { ... }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Notice that it is a supertrait of both <code>InterleavedBuffer&lt;'a&gt;</code> and <code>BorrowedMutBuffer&lt;'a&gt;</code>: It requires both an interleaved memory layout <em>and</em> mutably borrowed buffer memory!</p>
+<h3 id="columnar-buffers-and-the-columnarbuffera-trait"><a class="header" href="#columnar-buffers-and-the-columnarbuffera-trait">Columnar buffers and the <code>ColumnarBuffer&lt;'a&gt;</code> trait</a></h3>
+<p>For columnar memory layouts, there is the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.ColumnarBuffer.html"><code>ColumnarBuffer&lt;'a&gt;</code></a> trait. Here are its required methods:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ColumnarBuffer&lt;'a&gt;: BorrowedBuffer&lt;'a&gt; {
+    // Required methods
+    fn get_attribute_ref&lt;'b&gt;(
+        &amp;'b self,
+        attribute: &amp;PointAttributeDefinition,
+        index: usize
+    ) -&gt; &amp;'b [u8]
+       where 'a: 'b;
+    fn get_attribute_range_ref&lt;'b&gt;(
+        &amp;'b self,
+        attribute: &amp;PointAttributeDefinition,
+        range: Range&lt;usize&gt;
+    ) -&gt; &amp;'b [u8]
+       where 'a: 'b;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Where interleaved buffers provide by-reference access to whole points, columnar buffers allow borrowing the memory of individual attributes and ranges thereof using the two methods <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.ColumnarBuffer.html#tymethod.get_attribute_ref"><code>get_attribute_ref</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.ColumnarBuffer.html#tymethod.get_attribute_range_ref"><code>get_attribute_range_ref</code></a>. There are few surprises here, they work the same way the point-accessors on <code>InterleavedBuffer&lt;'a&gt;</code> do. There is also a raw attribute range accessor identical to <code>InterleavedBuffer&lt;'a&gt;</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn view_raw_attribute&lt;'b&gt;(
+    &amp;'b self,
+    attribute: &amp;PointAttributeMember
+) -&gt; RawAttributeView&lt;'b&gt;
+    where 'a: 'b { ... }
+<span class="boring">}</span></code></pre></pre>
+<p>For buffers that provide mutable access to their memory, there is also a mutable variant of <code>ColumnarBuffer&lt;'a&gt;</code>, called <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.ColumnarBufferMut.html"><code>ColumnarBufferMut&lt;'a&gt;</code></a>, which looks like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ColumnarBufferMut&lt;'a&gt;: ColumnarBuffer&lt;'a&gt; + BorrowedMutBuffer&lt;'a&gt; {
+    // Required methods
+    fn get_attribute_mut&lt;'b&gt;(
+        &amp;'b mut self,
+        attribute: &amp;PointAttributeDefinition,
+        index: usize
+    ) -&gt; &amp;'b mut [u8]
+       where 'a: 'b;
+    fn get_attribute_range_mut&lt;'b&gt;(
+        &amp;'b mut self,
+        attribute: &amp;PointAttributeDefinition,
+        range: Range&lt;usize&gt;
+    ) -&gt; &amp;'b mut [u8]
+       where 'a: 'b;
+
+    // Provided method
+    fn view_raw_attribute_mut&lt;'b&gt;(
+        &amp;'b mut self,
+        attribute: &amp;PointAttributeMember
+    ) -&gt; RawAttributeViewMut&lt;'b&gt;
+       where 'a: 'b { ... }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>It is to <code>ColumnarBuffer&lt;'a&gt;</code> as <code>InterleavedBufferMut&lt;'a&gt;</code> is to <code>InterleavedBuffer&lt;'a&gt;</code>: It contains the same set of methods as <code>ColumnarBuffer&lt;'a&gt;</code>, except they all provide mutable access to the attribute data.</p>
+<h2 id="the-implications-for-point-and-attribute-views"><a class="header" href="#the-implications-for-point-and-attribute-views">The implications for point and attribute views</a></h2>
+<p>Using all these buffer traits, <code>pasture</code> auto-detects the capabilities of the point and attribute views that you obtain by calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view"><code>view</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.BorrowedBuffer.html#method.view_attribute"><code>view_attribute</code></a> (and their mutable variants) on a buffer. The returned view type is a generic type with conditional implementations based on the memory layout and ownership of the underlying buffer. Here is an example showing the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.PointView.html"><code>PointView</code></a> type. Its basic implementation looks like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PointView&lt;'a, 'b, B: BorrowedBuffer&lt;'a&gt;, T: PointType&gt;
+where
+    'a: 'b,
+{ /* private fields */ }
+<span class="boring">}</span></code></pre></pre>
+<p>It wraps around a generic buffer type <code>B</code>, which has to at least implement the basic buffer trait <code>BorrowedBuffer&lt;'a&gt;</code>. Based on this trait, the point view can only provide by-value access to the point data:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;'a, 'b, B: BorrowedBuffer&lt;'a&gt;, T: PointType&gt; PointView&lt;'a, 'b, B, T&gt;
+where
+    'a: 'b {
+    pub fn at(&amp;self, index: usize) -&gt; T { ... }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If we want by-reference access to points, the underlying buffer must have interleaved memory layout:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;'a, 'b, B: InterleavedBuffer&lt;'a&gt;, T: PointType&gt; PointView&lt;'a, 'b, B, T&gt;
+where
+    'a: 'b {
+    pub fn at_ref&lt;'c&gt;(&amp;'c self, index: usize) -&gt; &amp;'c T
+    where
+        'b: 'c { ... }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The other accessors are implemented conditionally in a similar way. Not only does this reduce code duplication, it also allows you to explicitly specify which type of point cloud data access you want in your generic code:</p>
+<pre><code>fn process_data_by_ref&lt;'a, 'b, B: InterleavedBuffer&lt;'a&gt;&gt;(point_view: PointView&lt;'a, 'b, B, PointType&gt;) {
+    // Requires by-reference access to points of type `PointType`! 
+}
+</code></pre>
+<div id="admonition-note" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="point_buffers/buffer_traits.html#admonition-note"></a></p>
+</div>
+<div>
+<p>The <code>at_ref</code> function of <code>PointView</code> has <em>three</em> distinct lifetimes! This is necessary because there can be up to three distinct lifetimes when calling <code>at_ref</code>:</p>
+<ol>
+<li>The lifetime for which we borrow the individual point (<code>'c</code>)</li>
+<li>The lifetime for which the <code>PointView</code> is valid (<code>'b</code>)</li>
+<li>The lifetime for which the underlying buffer borrows its memory (<code>'a</code>)</li>
+</ol>
+</div>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="buffer-slices"><a class="header" href="#buffer-slices">Buffer slices</a></h1>
+<p>The point buffers in <code>pasture</code> semantically behave like collections of points. Rust has built-in support for obtaining subsets of sequences of elements through slices, given that the elements are stored contiguously in memory. <code>pasture</code> can do a bit more and allow slicing even for non-contiguous memory regions, e.g. columnar buffers. It does so by providing <em>slice buffers</em>, which are lightweight wrappers around point buffers that handle the offset calculations for accessing subsets of points. In this section you will learn about slice buffers, how to use them, and some reasons for the design decisions of <code>pasture</code> regarding slicing.</p>
+<h2 id="how-to-slice-point-buffers"><a class="header" href="#how-to-slice-point-buffers">How to slice point buffers</a></h2>
+<p>Slicing buffers is as simple as calling <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.SliceBuffer.html#tymethod.slice"><code>slice</code></a> on the buffer:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let buffer: VectorBuffer = ...;
+let slice = buffer.slice(1..2);
+// buffer supports by-reference access to points, so the slice also supports this:
+for point_ref in sliced.view::&lt;PointType&gt;().iter() {
+    println!("{:?}", point_ref);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>A sliced buffer retains the memory layout of the buffer it was sliced from. In this example, the basic buffer is a <code>VectorBuffer</code> which has interleaved memory layout, causing the slice to also have interleaved memory layout. Most of the time, the sliced buffer behaves identical to the original buffer: You can obtain views from the slice, it will implement the same memory layout traits as the original buffer, and you can slice the slice again as often as you like.</p>
+<p>Slices are - by definition - borrows of their underlying point buffer, so they will never implement <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.OwningBuffer.html"><code>OwningBuffer&lt;'a&gt;</code></a>, meaning you can never resize a buffer through a slice. This is similar to how Rust built-in slices behave and should not be surprising.</p>
+<p>If the source buffer supports mutable access to its memory, you can also obtain a mutable slice:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut buffer: VectorBuffer = ...;
+let slice = buffer.slice_mut(1..2);
+for point_mut in sliced_mut.view_mut::&lt;PointType&gt;().iter_mut() {
+    point_mut.intensity *= 2;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The usual borrowing rules apply, so you cannot obtain multiple mutable slices to the same buffer at the same time.</p>
+<div id="admonition-note" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="point_buffers/buffer_slices.html#admonition-note"></a></p>
+</div>
+<div>
+<p>Slicing point buffers can be less powerful than the built-in Rust slices. Things like <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.split_at_mut"><code>split_at_mut</code></a> are currently not supported in <code>pasture</code>.</p>
+</div>
+</div>
+<h2 id="the-slicebuffer-trait-and-why-we-cant-use-the-index-trait-instead"><a class="header" href="#the-slicebuffer-trait-and-why-we-cant-use-the-index-trait-instead">The <code>SliceBuffer</code> trait, and why we can't use the <code>Index</code> trait instead</a></h2>
+<p>The slicing syntax in <code>pasture</code> is more limited than the syntax you might be used to in Rust. In particular, <code>pasture</code> does not support the <code>[]</code> operator for slicing. This is a limitation in the design of the Rust standard library, or perhaps a mismatch between the intuition for what it means to call the <code>[]</code> operator to what it actually does. There is an interesting discussion <a href="https://internals.rust-lang.org/t/the-return-type-of-the-index-trait-has-a-big-restriction/17451">in the Rust internals forum</a>.</p>
+<p>In a nutshell: <code>[]</code> is syntactic sugar for the <a href="https://doc.rust-lang.org/std/ops/trait.Index.html"><code>Index</code></a> trait, which requires the return value of the indexing operation to be a borrow. Since <code>pasture</code> slices are proxy objects, they have to be returned by value as they are constructed on-demand. This makes it impossible to use them with the <code>Index</code> trait, therefore preventing us from using the <code>[]</code> operator.</p>
+<p><code>pasture</code> instead provides its own indexing traits: <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.SliceBuffer.html"><code>SliceBuffer&lt;'a&gt;</code></a> and <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.SliceBufferMut.html"><code>SliceBufferMut&lt;'a&gt;</code></a>. Here is what <code>SliceBuffer&lt;'a&gt;</code> looks like:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SliceBuffer&lt;'a&gt;
+where
+    Self: 'a,
+{
+    type SliceType: BorrowedBuffer&lt;'a&gt; + Sized;
+
+    // Required method
+    fn slice(&amp;'a self, range: Range&lt;usize&gt;) -&gt; Self::SliceType;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>It provides the <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.SliceBuffer.html#tymethod.slice"><code>slice</code></a> function, which returns an associated type <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/trait.SliceBuffer.html#associatedtype.SliceType"><code>SliceType</code></a>. There are a bunch of different slice types that <code>pasture</code> provides for a multitude of reasons, but the most important reason for <code>SliceBuffer</code> to use an associated type for the slice object is to allow efficient slicing of slices themselves.</p>
+<p>Slices are thin wrappers around point buffers, so when slicing some point buffer <code>B</code>, you end up with a <a href="https://docs.rs/pasture-core/0.4.0/pasture_core/containers/struct.BufferSlice.html"><code>BufferSlice&lt;B&gt;</code></a> (or some variant thereof). If we now slice this slice, naively we would end up with a nested slice type: <code>BufferSlice&lt;BufferSlice&lt;B&gt;&gt;</code>. What we instead want is <code>BufferSlice&lt;B&gt;</code> with updated slice bounds. This is possible because <code>BufferSlice&lt;B&gt;</code> implements the <code>SliceBuffer</code> trait with a different <code>SliceType</code> than the regular point buffer types and therefore collapses the nested hierarchy at compile-time.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
+<p>Here are some examples for using <code>pasture</code>:</p>
+<ul>
+<li><a href="examples/basic_usage.html">Basic usage</a></li>
+<li><a href="examples/point_io.html">Reading and writing general point cloud files</a></li>
+<li><a href="examples/reading_las.html">Reading LAS files</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="basic-usage-of-pasture"><a class="header" href="#basic-usage-of-pasture">Basic usage of <code>pasture</code></a></h1>
+<p>In a nutshell, <code>pasture</code> provides data structures for point cloud data and functions to interact with these data structures. Think <code>Vec&lt;T&gt;</code>, but for arbitrary points whose format is stored at runtime. The following example shows how point data is read from a file and how individual points and attributes are accessed:</p>
+<pre><pre class="playground"><code class="language-rust">use anyhow::{bail, Context, Result};
+use pasture_core::{
+    containers::{BorrowedBuffer, VectorBuffer},
+    layout::attributes::POSITION_3D,
+    nalgebra::Vector3,
+};
+use pasture_io::base::{read_all};
+
+fn main() -&gt; Result&lt;()&gt; {
+    // Reading a point cloud file is as simple as calling `read_all`
+    let points = read_all::&lt;VectorBuffer, _&gt;("pointcloud.las").context("Failed to read points")?;
+
+    if points.point_layout().has_attribute(&amp;POSITION_3D) {
+        for position in points
+            .view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D)
+            .into_iter()
+            .take(10)
+        {
+            println!("({};{};{})", position.x, position.y, position.z);
+        }
+    } else {
+        bail!("Point cloud file has no positions!");
+    }
+
+    Ok(())
+}</code></pre></pre>
+<p>If you want to create a buffer for points yourself, you need to specify a <code>PointLayout</code> manually, which <code>pasture</code> can derive from a <code>struct</code> definition like in the following example:</p>
+<pre><pre class="playground"><code class="language-rust">/// This point type uses the #[derive(PointType)] macro to auto-generate an appropriate PointLayout
+#[repr(C, packed)]
+#[derive(Copy, Clone, PointType, Debug, bytemuck::NoUninit, bytemuck::AnyBitPattern)]
+struct SimplePoint {
+    #[pasture(BUILTIN_POSITION_3D)]
+    pub position: Vector3&lt;f64&gt;,
+    #[pasture(BUILTIN_INTENSITY)]
+    pub intensity: u16,
+}
+
+fn main() {
+    // Create some points
+    let points = vec![
+        SimplePoint {
+            position: Vector3::new(1.0, 2.0, 3.0),
+            intensity: 42,
+        },
+        SimplePoint {
+            position: Vector3::new(-1.0, -2.0, -3.0),
+            intensity: 84,
+        },
+    ];
+
+    // A VectorBuffer can be created from a PointLayout
+    let mut buffer = VectorBuffer::new_from_layout(SimplePoint::layout());
+    // We can push individual points through a (mutable) PointView:
+    buffer.view_mut().push_point(points[0]);
+    buffer.view_mut().push_point(points[1]);
+
+    // A more elegant solution is to collect the data from an iterator:
+    buffer = points.iter().copied().collect::&lt;VectorBuffer&gt;();
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reading-and-writing-general-point-cloud-files"><a class="header" href="#reading-and-writing-general-point-cloud-files">Reading and writing general point cloud files</a></h1>
+<p>If you just want to read the contents of a point cloud files without any special handling, use <a href="https://docs.rs/pasture-io/latest/pasture_io/base/fn.read_all.html"><code>read_all</code></a>, like in the following example:</p>
+<pre><pre class="playground"><code class="language-rust">use anyhow::{bail, Context, Result};
+use pasture_core::{
+    containers::{BorrowedBuffer, VectorBuffer},
+    layout::attributes::POSITION_3D,
+    nalgebra::Vector3,
+};
+use pasture_io::base::{read_all};
+
+fn main() -&gt; Result&lt;()&gt; {
+    // Reading a point cloud file is as simple as calling `read_all`
+    let points = read_all::&lt;VectorBuffer, _&gt;("pointcloud.las").context("Failed to read points")?;
+
+    Ok(())
+}</code></pre></pre>
+<p>The opposite works for writing the contents of a <code>pasture</code> buffer into a file. The type of file is deduced from the file extension, with three formats currently supported out of the box: LAS for files ending in <code>.las</code>, compressed LAZ for files ending in <code>.laz</code>, and 3D Tiles for files ending in <code>.pnts</code>:</p>
+<pre><pre class="playground"><code class="language-rust">/// This point type uses the #[derive(PointType)] macro to auto-generate an appropriate PointLayout
+#[repr(C, packed)]
+#[derive(Copy, Clone, PointType, Debug, bytemuck::NoUninit, bytemuck::AnyBitPattern)]
+struct SimplePoint {
+    #[pasture(BUILTIN_POSITION_3D)]
+    pub position: Vector3&lt;f64&gt;,
+    #[pasture(BUILTIN_INTENSITY)]
+    pub intensity: u16,
+}
+
+fn main() -&gt; Result&lt;()&gt; {
+    // Create some points
+    let points = vec![
+        SimplePoint {
+            position: Vector3::new(1.0, 2.0, 3.0),
+            intensity: 42,
+        },
+        SimplePoint {
+            position: Vector3::new(-1.0, -2.0, -3.0),
+            intensity: 84,
+        },
+    ];
+
+    let buffer = points.iter().copied().collect::&lt;VectorBuffer&gt;();
+    // Write all points in `buffer` into a LAS file:
+    write_all(&amp;buffer, "file.las")?;
+
+    Ok(())
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reading-las-files"><a class="header" href="#reading-las-files">Reading LAS files</a></h1>
+<p>This section covers reading LAS files using <code>pasture</code>, including compressed LAZ files.</p>
+<h2 id="reading-in-the-default-las-point-record-layout"><a class="header" href="#reading-in-the-default-las-point-record-layout">Reading in the default LAS point record layout</a></h2>
+<p>LAS and LAZ files can be read using the <a href="https://docs.rs/pasture-io/latest/pasture_io/las/struct.LASReader.html"><code>LASReader</code></a> type. It works with a file path or any type implementing <code>Read</code>:</p>
+<pre><code class="language-rust editable noplayground">use anyhow::{bail, Context, Result};
+use pasture_core::{
+    containers::{BorrowedBuffer, BorrowedBufferExt, HashMapBuffer, VectorBuffer},
+    layout::{attributes::POSITION_3D, PointLayout},
+    nalgebra::Vector3,
+};
+use pasture_io::{
+    base::PointReader,
+    las::{LASReader, ATTRIBUTE_LOCAL_LAS_POSITION},
+};
+
+fn main() -&gt; Result&lt;()&gt; {
+    let args = std::env::args().collect::&lt;Vec&lt;_&gt;&gt;();
+    if args.len() != 2 {
+        bail!("Usage: las_io &lt;INPUT_FILE&gt;");
+    }
+    let input_file = args[1].as_str();
+
+    let mut las_reader =
+        LASReader::from_path(input_file, false).context("Could not open LAS file")?;
+    let points = las_reader
+        .read::&lt;VectorBuffer&gt;(10)
+        .context("Error while reading points")?;
+
+    for position in points
+        .view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D)
+        .into_iter()
+        .take(10)
+    {
+        eprintln!("{}", position);
+    }
+
+    Ok(())
+}</code></pre>
+<p>The <a href="https://docs.rs/pasture-io/latest/pasture_io/las/struct.LASReader.html#method.from_path"><code>from_path</code></a> and <a href="https://docs.rs/pasture-io/latest/pasture_io/las/struct.LASReader.html#method.from_read"><code>from_read</code></a> functions have a section parameter that determines the <code>PointLayout</code> that <code>pasture</code> will create for the point records within the file. If set to <code>false</code>, you will get a more convenient <code>PointLayout</code> than the raw binary layout as per the <a href="https://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf">LAS specification</a>. This includes positions as 64-bit floating-point values in world space as opposed to 32-bit signed integer values in local space, and unpacked bit attributes like the return number, number of returns etc. If you instead want a <code>PointLayout</code> that exactly matches the binary layout of the point record format, pass <code>true</code> as the second parameter to <code>from_path</code> and <code>from_read</code>!</p>
+<h2 id="reading-points-with-a-custom-pointlayout"><a class="header" href="#reading-points-with-a-custom-pointlayout">Reading points with a custom <code>PointLayout</code></a></h2>
+<p>If you only want to read some specific point attributes from a LAS/LAZ file, you can call <a href="https://docs.rs/pasture-io/latest/pasture_io/base/trait.PointReader.html#tymethod.read_into"><code>read_into</code></a> on the reader instead of <a href="https://docs.rs/pasture-io/latest/pasture_io/base/trait.PointReader.html#method.read"><code>read</code></a>. This will read into a given buffer, respecting the <code>PointLayout</code> of the buffer:</p>
+<pre><code class="language-rust editable noplayground">// Imports redacted for brevity
+
+fn main() -&gt; Result&lt;()&gt; {
+    let args = std::env::args().collect::&lt;Vec&lt;_&gt;&gt;();
+    if args.len() != 2 {
+        bail!("Usage: las_io &lt;INPUT_FILE&gt;");
+    }
+    let input_file = args[1].as_str();
+
+    let mut las_reader = LASReader::from_path(input_file, false).context("Could not open LAS file")?;
+
+    let layout = PointLayout::from_attributes(&amp;[POSITION_3D]);
+    let mut points = HashMapBuffer::with_capacity(10, layout);
+    las_reader
+        .read_into(&amp;mut points, 10)
+        .context("Can't read points in custom layout")?;
+
+    for position in points.view_attribute::&lt;Vector3&lt;f64&gt;&gt;(&amp;POSITION_3D).iter() {
+        eprintln!("{}", position);
+    }
+
+    Ok(())
+}</code></pre>
+<h2 id="reading-points-with-a-memory-layout-that-exactly-matches-the-binary-layout-of-las-point-records"><a class="header" href="#reading-points-with-a-memory-layout-that-exactly-matches-the-binary-layout-of-las-point-records">Reading points with a memory layout that exactly matches the binary layout of LAS point records</a></h2>
+<p>Lastly, here is an example for reading LAS/LAZ data with a <code>PointLayout</code> that matches the binary layout of the point records. The resulting buffer will not contain a <code>POSITION_3D</code> attribute but instead the special <a href="https://docs.rs/pasture-io/latest/pasture_io/las/constant.ATTRIBUTE_LOCAL_LAS_POSITION.html"><code>ATTRIBUTE_LOCAL_LAS_POSITION</code></a>.</p>
+<pre><code class="language-rust editable noplayground">fn main() -&gt; Result&lt;()&gt; {
+    let args = std::env::args().collect::&lt;Vec&lt;_&gt;&gt;();
+    if args.len() != 2 {
+        bail!("Usage: las_io &lt;INPUT_FILE&gt;");
+    }
+    let input_file = args[1].as_str();
+    
+    let mut native_las_reader =
+        LASReader::from_path(input_file, true).context("Could not open LAS file")?;
+
+    let native_points = native_las_reader
+        .read::&lt;VectorBuffer&gt;(10)
+        .context("Failed to read points")?;
+    eprintln!(
+        "PointLayout obtained from a native LAS reader: {}",
+        native_points.point_layout()
+    );
+
+    for local_position in native_points
+        .view_attribute::&lt;Vector3&lt;i32&gt;&gt;(&amp;ATTRIBUTE_LOCAL_LAS_POSITION)
+        .into_iter()
+    {
+        eprintln!("{local_position}");
+    }
+
+    Ok(())
+}</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
